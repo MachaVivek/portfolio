@@ -1,0 +1,27 @@
+# How the app runs on your own machine during development.
+# Production doesn't use this file — Render builds the Dockerfile directly.
+
+services:
+  api:
+    build: .
+
+    # "host_port:container_port". The app always listens on 8000 inside the
+    # container; 8002 is just where it shows up on your machine. Change the left
+    # number if 8002 is taken (then use that port in your browser/curl).
+    ports:
+      - "8002:8000"
+
+    # Mounts your local folders into the container, so editing a file on your
+    # machine updates it inside the container instantly — no rebuild needed.
+    volumes:
+      - ./app:/app/app
+      - ./scripts:/app/scripts
+      - ./data:/app/data
+
+    # Loads your API keys from the .env file (which is never committed to git).
+    env_file:
+      - .env
+
+    # --reload restarts the server automatically whenever you save a file.
+    # Development only — it's slower and shouldn't be used in production.
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload

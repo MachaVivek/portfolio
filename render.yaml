@@ -1,0 +1,51 @@
+# Deployment config for Render. In the Render dashboard choose
+# "New -> Blueprint", point it at this repo, and it reads this file automatically.
+
+services:
+  - type: web
+    name: portfolio-backend
+    runtime: docker
+
+    # The Dockerfile lives in backend/, not at the repo root.
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+
+    # Render pings this to check the app came up healthy after a deploy.
+    healthCheckPath: /
+
+    envVars:
+      # "sync: false" means Render prompts you to type the value in the dashboard
+      # instead of reading it from this file — so no secret is ever committed to git.
+      - key: ALLOWED_ORIGINS
+        sync: false
+
+      # Render generates a strong random value for this one automatically.
+      - key: SECRET_KEY
+        generateValue: true
+
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: QDRANT_URL
+        sync: false
+      - key: QDRANT_API_KEY
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: GITHUB_USERNAME
+        sync: false
+      - key: GITHUB_ALLOWED_REPOS
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: RESEND_FROM_EMAIL
+        sync: false
+      - key: CONTACT_EMAIL_TO
+        sync: false
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
