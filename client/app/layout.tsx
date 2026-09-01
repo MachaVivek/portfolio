@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeContext";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import { portfolioData } from "@/data/portfolioData";
+import { ASSET_PATHS, EXTERNAL_SCRIPTS } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: `${portfolioData.profile.name} - Personal Portfolio`,
   description: `Personal portfolio website - ${portfolioData.profile.name}, ${portfolioData.profile.title}`,
   icons: {
-    icon: "/images/logo.ico",
+    icon: ASSET_PATHS.LOGO_ICO,
   },
 };
 
@@ -74,16 +76,18 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ErrorBoundary>
+          <ThemeProvider>{children}</ThemeProvider>
+        </ErrorBoundary>
 
         <Script
           type="module"
-          src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+          src={EXTERNAL_SCRIPTS.IONICONS_ESM}
           strategy="afterInteractive"
         />
         <Script
           noModule
-          src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+          src={EXTERNAL_SCRIPTS.IONICONS_NOMODULE}
           strategy="afterInteractive"
         />
       </body>

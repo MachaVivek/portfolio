@@ -29,4 +29,4 @@ EXPOSE 8000
 
 # Started with 0.0.0.0 (not localhost) so the server accepts connections from
 # outside the container.
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers", "--forwarded-allow-ips=*"]

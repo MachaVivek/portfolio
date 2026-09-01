@@ -1,23 +1,5 @@
 import type { ChatRequest } from "@/types/chat";
-
-const TIMEOUT_MS = 60_000;
-
-async function fetchBackend(path: string, options: RequestInit): Promise<Response> {
-  const configured = process.env.BACKEND_URL;
-  if (configured) {
-    return fetch(`${configured}${path}`, options);
-  }
-
-  try {
-    return await fetch(`http://localhost:8002${path}`, options);
-  } catch (err: unknown) {
-    const error = err as { code?: string; cause?: { code?: string } };
-    if (error?.cause?.code === "ECONNREFUSED" || error?.code === "ECONNREFUSED") {
-      return await fetch(`http://localhost:8000${path}`, options);
-    }
-    throw err;
-  }
-}
+import { fetchBackend, DEFAULT_TIMEOUT_MS } from "@/lib/backendClient";
 
 function messageForStatus(status: number): string {
   if (status === 429) {
@@ -46,15 +28,23 @@ function errorStream(message: string): Response {
 
 export async function POST(request: Request) {
   const body = (await request.json()) as ChatRequest;
+  const clientIp =
+    request.headers.get("cf-connecting-ip") ||
+    request.headers.get("x-real-ip") ||
+    request.headers.get("x-forwarded-for");
 
   try {
-    const response = await fetchBackend("/chat/stream", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-      signal: AbortSignal.timeout(TIMEOUT_MS),
-      cache: "no-store",
-    });
+    const response = await fetchBackend(
+      "/chat/stream",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(DEFAULT_TIMEOUT_MS),
+        cache: "no-store",
+      },
+      clientIp
+    );
 
     if (!response.ok || !response.body) {
       console.error(`Backend responded ${response.status}`);

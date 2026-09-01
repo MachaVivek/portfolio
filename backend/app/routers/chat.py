@@ -8,6 +8,7 @@ from fastapi.responses import StreamingResponse
 from app.agent.email_flow import is_cancellation, is_confirmation
 from app.agent.orchestrator import run_agent, run_agent_stream
 from app.config import settings
+from app.constants import RATE_LIMIT_CHAT, RATE_LIMIT_CONTACT
 from app.models import ChatRequest, ChatResponse, ContactFormRequest
 from app.rate_limit import get_client_ip, limiter
 from app.security import is_draft_authentic
@@ -92,7 +93,7 @@ def _format_agent_error(exc: Exception) -> str:
     )
 
 @router.post("/chat", response_model=ChatResponse)
-@limiter.limit("10/minute")
+@limiter.limit(RATE_LIMIT_CHAT)
 def chat(request: Request, chat_request: ChatRequest) -> ChatResponse:
     last_message = _check_message(chat_request)
 
@@ -134,7 +135,7 @@ def _sse(event: dict) -> str:
     return f"data: {json.dumps(event)}\n\n"
 
 @router.post("/chat/stream")
-@limiter.limit("10/minute")
+@limiter.limit(RATE_LIMIT_CHAT)
 def chat_stream(request: Request, chat_request: ChatRequest) -> StreamingResponse:
     last_message = _check_message(chat_request)
 
@@ -204,7 +205,7 @@ def chat_stream(request: Request, chat_request: ChatRequest) -> StreamingRespons
     )
 
 @router.post("/contact")
-@limiter.limit("5/minute")
+@limiter.limit(RATE_LIMIT_CONTACT)
 def send_contact(request: Request, body: ContactFormRequest):
     visitor_ip = get_client_ip(request)
     try:

@@ -62,13 +62,13 @@ export default function ContactPage({ isActive }: ContactPageProps) {
         setSubmitStatus("error");
         setStatusMessage(
           data.error ||
-            "Could not send your message right now. Please email directly at machavivek19@gmail.com."
+            `Could not send your message right now. Please email directly at ${contacts.email}.`
         );
       }
     } catch {
       setSubmitStatus("error");
       setStatusMessage(
-        "Network connection failed. Please try again or reach out directly at machavivek19@gmail.com."
+        `Network connection failed. Please try again or reach out directly at ${contacts.email}.`
       );
     } finally {
       setIsSubmitting(false);
@@ -122,7 +122,10 @@ export default function ContactPage({ isActive }: ContactPageProps) {
           <div className="input-wrapper">
             <input
               type="text"
+              id="contact-fullname"
               name="fullname"
+              aria-label="Full name"
+              autoComplete="name"
               className="form-input"
               placeholder="Full name"
               required
@@ -132,7 +135,10 @@ export default function ContactPage({ isActive }: ContactPageProps) {
             />
             <input
               type="email"
+              id="contact-email"
               name="email"
+              aria-label="Email address"
+              autoComplete="email"
               className="form-input"
               placeholder="Email address"
               required
@@ -143,7 +149,9 @@ export default function ContactPage({ isActive }: ContactPageProps) {
           </div>
 
           <textarea
+            id="contact-message"
             name="message"
+            aria-label="Your message"
             className="form-input"
             placeholder="Your Message"
             required

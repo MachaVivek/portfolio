@@ -1,5 +1,8 @@
 "use client";
 
+import { memo } from "react";
+import { ASSET_PATHS } from "@/lib/constants";
+
 export type CharacterState =
   | "idle"
   | "thinking"
@@ -12,7 +15,7 @@ interface CharacterArtProps {
   state: CharacterState;
 }
 
-export default function CharacterArt({ state }: CharacterArtProps) {
+function CharacterArtComponent({ state }: CharacterArtProps) {
   return (
     <div className={`avatar-dynamic-stage state-${state}`}>
 
@@ -101,13 +104,18 @@ export default function CharacterArt({ state }: CharacterArtProps) {
       )}
 
       <div className="avatar-figure-container">
-
         <img
-          src="/images/ai-avatar.png"
+          src={ASSET_PATHS.AI_AVATAR}
           alt="AI Assistant"
           className="avatar-cutout-img"
+          width="180"
+          height="180"
+          loading="eager"
         />
       </div>
     </div>
   );
 }
+
+const CharacterArt = memo(CharacterArtComponent);
+export default CharacterArt;

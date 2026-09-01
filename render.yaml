@@ -49,3 +49,16 @@ services:
         sync: false
       - key: ADMIN_PASSWORD
         sync: false
+
+  - type: web
+    name: portfolio-client
+    runtime: docker
+    rootDir: client
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    envVars:
+      - key: BACKEND_URL
+        fromService:
+          name: portfolio-backend
+          type: web
+          property: host

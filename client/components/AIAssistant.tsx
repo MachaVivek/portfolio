@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 import CharacterArt, { CharacterState } from "@/components/CharacterArt";
 import EmailDraftCard, { EmailDraft } from "@/components/EmailDraftCard";
 import { portfolioData } from "@/data/portfolioData";
+import { API_ROUTES } from "@/lib/constants";
 
 interface Message {
   id: string;
@@ -22,6 +23,41 @@ const STATE_NAMES: Record<CharacterState, { label: string; icon: string }> = {
   coding: { label: "Coding", icon: "code-slash-outline" },
   envelope: { label: "Drafting", icon: "mail-outline" },
   error: { label: "Alert", icon: "alert-circle-outline" },
+};
+
+const MARKDOWN_COMPONENTS = {
+  a: ({ href, children }: { href?: string; children?: React.ReactNode }) => {
+    const isSafe = href && (href.startsWith("https://") || href.startsWith("http://") || href.startsWith("mailto:"));
+    return (
+      <a
+        href={isSafe ? href : "#"}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="ai-chat-link"
+      >
+        {children}
+      </a>
+    );
+  },
+  strong: ({ children }: { children?: React.ReactNode }) => (
+    <strong className="ai-chat-strong">{children}</strong>
+  ),
+  code: ({ children }: { children?: React.ReactNode }) => (
+    <code className="ai-chat-code">{children}</code>
+  ),
+  ul: ({ children }: { children?: React.ReactNode }) => (
+    <ul className="ai-chat-ul">{children}</ul>
+  ),
+  ol: ({ children }: { children?: React.ReactNode }) => (
+    <ol className="ai-chat-ol">{children}</ol>
+  ),
+  li: ({ children }: { children?: React.ReactNode }) => (
+    <li className="ai-chat-li">{children}</li>
+  ),
+  h1: ({ children }: { children?: React.ReactNode }) => <h4 className="ai-content-h4">{children}</h4>,
+  h2: ({ children }: { children?: React.ReactNode }) => <h4 className="ai-content-h4">{children}</h4>,
+  h3: ({ children }: { children?: React.ReactNode }) => <h4 className="ai-content-h4">{children}</h4>,
+  p: ({ children }: { children?: React.ReactNode }) => <p className="ai-chat-p">{children}</p>,
 };
 
 export default function AIAssistant() {
@@ -55,7 +91,7 @@ export default function AIAssistant() {
   const poseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    fetch("/api/health").catch(() => {});
+    fetch(API_ROUTES.HEALTH).catch(() => {});
   }, []);
 
   const sendMessage = async (textToSend: string) => {
@@ -108,7 +144,7 @@ export default function AIAssistant() {
         .map((m) => ({ role: m.role, content: m.content }))
         .slice(-40);
 
-      const response = await fetch("/api/chat/stream", {
+      const response = await fetch(API_ROUTES.CHAT_STREAM, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -280,6 +316,9 @@ export default function AIAssistant() {
           <div
             ref={chatScrollRef}
             className="ai-chat-messages custom-chat-scrollbar"
+            role="log"
+            aria-live="polite"
+            aria-label="Conversation history"
           >
             {messages.map((msg) => (
               <div key={msg.id} className={`ai-message-row ${msg.role}`}>
@@ -307,39 +346,7 @@ export default function AIAssistant() {
 
                   {msg.content && msg.content.trim() ? (
                     <div className="ai-msg-text markdown-content">
-                      <ReactMarkdown
-                        components={{
-                          a: ({ href, children }) => (
-                            <a
-                              href={href}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="ai-chat-link"
-                            >
-                              {children}
-                            </a>
-                          ),
-                          strong: ({ children }) => (
-                            <strong className="ai-chat-strong">{children}</strong>
-                          ),
-                          code: ({ children }) => (
-                            <code className="ai-chat-code">{children}</code>
-                          ),
-                          ul: ({ children }) => (
-                            <ul className="ai-chat-ul">{children}</ul>
-                          ),
-                          ol: ({ children }) => (
-                            <ol className="ai-chat-ol">{children}</ol>
-                          ),
-                          li: ({ children }) => (
-                            <li className="ai-chat-li">{children}</li>
-                          ),
-                          h1: ({ children }) => <h4 className="ai-content-h4">{children}</h4>,
-                          h2: ({ children }) => <h4 className="ai-content-h4">{children}</h4>,
-                          h3: ({ children }) => <h4 className="ai-content-h4">{children}</h4>,
-                          p: ({ children }) => <p className="ai-chat-p">{children}</p>,
-                        }}
-                      >
+                      <ReactMarkdown components={MARKDOWN_COMPONENTS}>
                         {msg.content}
                       </ReactMarkdown>
                     </div>

@@ -13,12 +13,12 @@ logger = logging.getLogger(__name__)
 
 @tool
 def portfolio_search(query: str) -> str:
+    """Search Vivek's portfolio, background, experience, and skills using semantic search."""
     if not settings.qdrant_url:
         return "Portfolio search is not configured yet."
     try:
         chunks = search_portfolio(query)
     except Exception as exc:
-
         logger.warning("Portfolio search failed: %s", exc)
         return f"Portfolio search failed: {exc}"
     if not chunks:
@@ -27,7 +27,7 @@ def portfolio_search(query: str) -> str:
 
 @tool
 def github_repo_info(repo_name: str) -> str:
-
+    """Retrieve details, description, language, topics, and README for a specific allowed GitHub repository."""
     allowed = settings.github_allowed_repos_list
     if not allowed:
         return "No repositories are available to look up."
@@ -60,12 +60,12 @@ def _generate_subject(message: str) -> str:
         )
         return llm.invoke(prompt).content.strip()
     except Exception as exc:
-
         logger.warning("Subject generation failed, using fallback: %s", exc)
         return "New message from your portfolio"
 
 @tool
 def draft_contact_email(message: str, visitor_email: str = "", visitor_name: str = "") -> str:
+    """Draft a contact email preview to reach Vivek with the visitor's message, name, and email."""
     draft = {
         "subject": _generate_subject(message),
         "message": message,

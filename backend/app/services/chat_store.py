@@ -1,4 +1,5 @@
 import logging
+import re
 
 from app.config import settings
 from app.services.supabase_client import get_supabase_client
@@ -88,11 +89,14 @@ def get_conversation_messages(conversation_id: str) -> list[dict]:
 def search_messages(query: str, limit: int = 50) -> list[dict]:
     if not is_configured() or not query:
         return []
+    safe_query = re.sub(r'[,().\\]', '', query).strip()
+    if not safe_query:
+        return []
     client = get_supabase_client()
     result = (
         client.table("messages")
         .select("*")
-        .ilike("content", f"%{query}%")
+        .ilike("content", f"%{safe_query}%")
         .order("created_at", desc=True)
         .limit(limit)
         .execute()

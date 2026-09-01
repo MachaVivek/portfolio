@@ -8,6 +8,7 @@ import React, {
   useCallback,
   ReactNode,
 } from "react";
+import { APP_DEFAULTS, STORAGE_KEYS } from "@/lib/constants";
 
 export type ThemeMode = "dark" | "light";
 
@@ -166,19 +167,19 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [themeMode, setThemeModeState] = useState<ThemeMode>(() => {
     if (typeof window !== "undefined") {
       try {
-        const savedMode = localStorage.getItem("portfolio-theme-mode") as ThemeMode | null;
+        const savedMode = localStorage.getItem(STORAGE_KEYS.THEME_MODE) as ThemeMode | null;
         if (savedMode === "light" || savedMode === "dark") {
           return savedMode;
         }
       } catch {}
     }
-    return "dark";
+    return APP_DEFAULTS.THEME_MODE;
   });
 
   const [accentId, setAccentIdState] = useState<string>(() => {
     if (typeof window !== "undefined") {
       try {
-        const savedAccent = localStorage.getItem("portfolio-accent-id");
+        const savedAccent = localStorage.getItem(STORAGE_KEYS.ACCENT_ID);
         if (savedAccent) {
           const matched = ACCENT_COLORS.find(
             (c) => c.id === savedAccent || c.primary.toLowerCase() === savedAccent.toLowerCase()
@@ -187,7 +188,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         }
       } catch {}
     }
-    return "cyan";
+    return APP_DEFAULTS.ACCENT_ID;
   });
 
   useEffect(() => {
@@ -199,7 +200,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const setThemeMode = useCallback((mode: ThemeMode) => {
     setThemeModeState(mode);
     try {
-      localStorage.setItem("portfolio-theme-mode", mode);
+      localStorage.setItem(STORAGE_KEYS.THEME_MODE, mode);
     } catch {}
   }, []);
 
@@ -207,7 +208,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     setThemeModeState((prev) => {
       const nextMode: ThemeMode = prev === "dark" ? "light" : "dark";
       try {
-        localStorage.setItem("portfolio-theme-mode", nextMode);
+        localStorage.setItem(STORAGE_KEYS.THEME_MODE, nextMode);
       } catch {}
       return nextMode;
     });
@@ -218,7 +219,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     if (matched) {
       setAccentIdState(id);
       try {
-        localStorage.setItem("portfolio-accent-id", id);
+        localStorage.setItem(STORAGE_KEYS.ACCENT_ID, id);
       } catch {}
     }
   }, []);

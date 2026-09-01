@@ -5,12 +5,9 @@ import logging
 import time
 
 from app.config import settings
+from app.constants import DRAFT_LIFETIME_SECONDS, SIGNED_FIELDS
 
 logger = logging.getLogger(__name__)
-
-SIGNED_FIELDS = ("subject", "message", "visitor_name", "visitor_email", "expires_at")
-
-DRAFT_LIFETIME_SECONDS = 30 * 60
 
 def _fingerprint(draft: dict) -> str:
 

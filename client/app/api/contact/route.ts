@@ -1,21 +1,5 @@
-const TIMEOUT_MS = 20_000;
-
-async function fetchBackend(path: string, options: RequestInit): Promise<Response> {
-  const configured = process.env.BACKEND_URL;
-  if (configured) {
-    return fetch(`${configured}${path}`, options);
-  }
-
-  try {
-    return await fetch(`http://localhost:8002${path}`, options);
-  } catch (err: unknown) {
-    const error = err as { code?: string; cause?: { code?: string } };
-    if (error?.cause?.code === "ECONNREFUSED" || error?.code === "ECONNREFUSED") {
-      return await fetch(`http://localhost:8000${path}`, options);
-    }
-    throw err;
-  }
-}
+import { fetchBackend } from "@/lib/backendClient";
+import { APP_DEFAULTS, BACKEND_CONFIG } from "@/lib/constants";
 
 export async function POST(request: Request) {
   try {
@@ -29,12 +13,21 @@ export async function POST(request: Request) {
       );
     }
 
-    const response = await fetchBackend("/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, message }),
-      signal: AbortSignal.timeout(TIMEOUT_MS),
-    });
+    const clientIp =
+      request.headers.get("cf-connecting-ip") ||
+      request.headers.get("x-real-ip") ||
+      request.headers.get("x-forwarded-for");
+
+    const response = await fetchBackend(
+      "/contact",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+        signal: AbortSignal.timeout(BACKEND_CONFIG.CONTACT_TIMEOUT_MS),
+      },
+      clientIp
+    );
 
     const data = await response.json();
 
@@ -52,7 +45,7 @@ export async function POST(request: Request) {
       {
         ok: false,
         error:
-          "Could not reach the email server. Please try again or email machavivek19@gmail.com directly.",
+          `Could not reach the email server. Please try again or email ${APP_DEFAULTS.CONTACT_EMAIL} directly.`,
       },
       { status: 503 },
     );

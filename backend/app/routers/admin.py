@@ -6,6 +6,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
 from app.config import settings
+from app.constants import RATE_LIMIT_ADMIN
 from app.rate_limit import limiter
 from app.services import chat_store
 
@@ -51,8 +52,7 @@ def _table(headers: list[str], rows: str, empty_message: str) -> str:
     return f"<table><tr>{header_html}</tr>{rows}</table>"
 
 @router.get("", response_class=HTMLResponse)
-
-@limiter.limit("30/minute")
+@limiter.limit(RATE_LIMIT_ADMIN)
 def admin_home(
     request: Request,
     q: str = Query(default=""),
@@ -107,7 +107,7 @@ def admin_home(
 </body></html>"""
 
 @router.get("/conversation/{conversation_id}", response_class=HTMLResponse)
-@limiter.limit("30/minute")
+@limiter.limit(RATE_LIMIT_ADMIN)
 def admin_conversation(
     request: Request,
     conversation_id: str,
