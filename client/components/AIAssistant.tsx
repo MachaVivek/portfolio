@@ -65,6 +65,7 @@ export default function AIAssistant() {
   const [isTyping, setIsTyping] = useState(false);
   const [input, setInput] = useState("");
   const chatScrollRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { profile, portfolio, resume } = portfolioData;
 
   const [messages, setMessages] = useState<Message[]>([
@@ -237,11 +238,29 @@ export default function AIAssistant() {
     }
   };
 
+  const adjustTextareaHeight = () => {
+    const el = textareaRef.current;
+    if (el) {
+      el.style.height = "auto";
+      el.style.height = `${Math.min(el.scrollHeight, 160)}px`;
+    }
+  };
+
   const handleSend = () => {
     const text = input.trim();
     if (!text || isTyping) return;
     setInput("");
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+    }
     sendMessage(text);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
   };
 
   const handleSubmit = (e: FormEvent) => {
@@ -254,6 +273,9 @@ export default function AIAssistant() {
     setIsTyping(false);
     setConversationId(null);
     setPendingDraft(null);
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+    }
     setMessages([
       {
         id: "welcome-1",
@@ -378,12 +400,17 @@ export default function AIAssistant() {
 
           <form className="ai-chat-input-form" onSubmit={handleSubmit}>
             <div className="ai-chat-input-wrapper">
-              <input
-                type="text"
+              <textarea
+                ref={textareaRef}
                 className="ai-chat-input-field"
                 placeholder={`Ask something about ${profile.name}'s projects, experience...`}
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                rows={1}
+                onChange={(e) => {
+                  setInput(e.target.value);
+                  adjustTextareaHeight();
+                }}
+                onKeyDown={handleKeyDown}
                 disabled={isTyping}
               />
               <button

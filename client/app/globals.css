@@ -1108,18 +1108,27 @@ main.portfolio-app-main {
 .ai-chat-input-wrapper {
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
+  width: 100%;
 }
 
 .ai-chat-input-field {
+  width: 100%;
+  min-height: 48px;
+  max-height: 160px;
   background: var(--eerie-black-1);
   color: var(--white-2);
+  font-family: inherit;
   font-size: var(--fs-6);
-  padding: 13px 95px 13px 16px;
+  line-height: 1.5;
+  padding: 12px 95px 12px 16px;
   border: 1px solid var(--jet);
-  border-radius: 12px;
+  border-radius: 14px;
   outline: none;
-  transition: var(--transition-1);
+  resize: none;
+  overflow-y: auto;
+  field-sizing: content;
+  transition: border-color var(--transition-1), box-shadow var(--transition-1);
 }
 
 .ai-chat-input-field:focus {
@@ -1127,9 +1136,19 @@ main.portfolio-app-main {
   box-shadow: 0 0 0 2px hsla(45, 100%, 72%, 0.15);
 }
 
+.ai-chat-input-field::-webkit-scrollbar {
+  width: 4px;
+}
+
+.ai-chat-input-field::-webkit-scrollbar-thumb {
+  background: var(--jet);
+  border-radius: 4px;
+}
+
 .ai-chat-send-btn {
   position: absolute;
-  right: 6px;
+  right: 8px;
+  bottom: 7px;
   display: flex;
   align-items: center;
   gap: 6px;
