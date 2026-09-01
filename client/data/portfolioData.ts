@@ -153,9 +153,8 @@ export const portfolioData: PortfolioData = {
 
   about: {
     paragraphs: [
-      "Associate Software Engineer specializing in Full Stack Development, Mobile Applications, AI, and scalable backend systems. I enjoy building production-ready software with clean architecture and exceptional user experiences.",
-
-      "My expertise spans React, React Native, Node.js, FastAPI, PostgreSQL, Redis, LangChain, and cloud-native development. I have experience delivering real-world products, open-source libraries, AI applications, and developer tools.",
+      "Associate Software Engineer focused on building reliable, scalable, and thoughtfully crafted digital products. I value clean architecture, maintainable systems, and creating experiences that feel intuitive from the first interaction.",
+      "Driven by product thinking and engineering excellence, I enjoy transforming complex ideas into polished, production-ready solutions with a strong emphasis on performance, usability, and long-term maintainability.",
     ],
 
     services: [
@@ -164,28 +163,28 @@ export const portfolioData: PortfolioData = {
         icon: "layers-outline",
         iconAlt: "Full Stack Development",
         title: "Full Stack Development",
-        text: "Building scalable web applications using React, Next.js, Node.js, Express, FastAPI, and PostgreSQL.",
+        text: "Architecting scalable microservices, secure authentication systems, high-performance REST APIs, Redis caching, message queues, and reusable frontend component libraries for production-grade applications.",
       },
       {
         id: "srv-mobile",
         icon: "phone-portrait-outline",
         iconAlt: "Mobile Apps",
         title: "Mobile Apps",
-        text: "Cross-platform mobile application development using React Native, Expo, and TypeScript.",
+        text: "Crafting polished cross-platform mobile applications with React Native, Expo, and TypeScript, focusing on responsive UI, smooth interactions, and native-quality performance.",
       },
       {
         id: "srv-ai",
         icon: "sparkles-outline",
         iconAlt: "AI Engineering",
         title: "AI Engineering",
-        text: "Developing RAG applications, LangChain pipelines, vector search, and MCP servers for intelligent systems.",
+        text: "Engineering intelligent AI products with RAG, LangChain, vector databases, MCP servers, and LLM workflows, combining robust backend systems with intuitive user experiences.",
       },
       {
         id: "srv-devops",
         icon: "infinite-outline",
         iconAlt: "DevOps",
         title: "DevOps",
-        text: "Docker containerization, CI/CD with GitHub Actions, AWS cloud infrastructure (EC2, S3), and automated deployment.",
+        text: "Delivering reliable production deployments through Docker, GitHub Actions, AWS infrastructure, automated CI/CD pipelines, monitoring, and cloud-native development practices.",
       },
     ],
 
