@@ -21,7 +21,7 @@ from fastapi.responses import StreamingResponse
 from app.agent.email_flow import is_cancellation, is_confirmation
 from app.agent.orchestrator import run_agent, run_agent_stream
 from app.config import settings
-from app.models import ChatMessage, ChatRequest, ChatResponse
+from app.models import ChatRequest, ChatResponse
 from app.rate_limit import get_client_ip, limiter
 from app.security import is_draft_authentic
 from app.services import chat_store

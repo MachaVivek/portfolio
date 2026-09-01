@@ -83,18 +83,6 @@ export interface ProjectItem {
   link: string;
 }
 
-export interface BlogPost {
-  id: string;
-  image: string;
-  alt: string;
-  category: string;
-  date: string;
-  dateTime: string;
-  title: string;
-  text: string;
-  link: string;
-}
-
 export interface PortfolioData {
   profile: Profile;
   about: {
@@ -113,9 +101,6 @@ export interface PortfolioData {
   portfolio: {
     categories: string[];
     projects: ProjectItem[];
-  };
-  blog: {
-    posts: BlogPost[];
   };
 }
 
@@ -526,77 +511,6 @@ export const portfolioData: PortfolioData = {
         image: "/images/project-7.png",
         alt: "Observability",
         link: "https://github.com/MachaVivek/Observability",
-      },
-    ],
-  },
-
-  blog: {
-    posts: [
-      {
-        id: "blog-1",
-        image: "/images/blog-1.jpg",
-        alt: "RAG Architecture",
-        category: "AI",
-        date: "Oct 2025",
-        dateTime: "2025-10-01",
-        title: "Building Production-Ready RAG Applications",
-        text: "Designing scalable retrieval pipelines using LangChain, Pinecone, and FastAPI.",
-        link: "#",
-      },
-      {
-        id: "blog-2",
-        image: "/images/blog-2.jpg",
-        alt: "Redis Caching",
-        category: "Backend",
-        date: "Jun 2026",
-        dateTime: "2026-06-01",
-        title: "Redis Caching Strategies for High-Traffic APIs",
-        text: "Practical techniques to reduce latency and database load using Redis.",
-        link: "#",
-      },
-      {
-        id: "blog-3",
-        image: "/images/blog-3.jpg",
-        alt: "MCP Server",
-        category: "AI",
-        date: "May 2026",
-        dateTime: "2026-05-01",
-        title: "Developing an MCP Server with FastMCP",
-        text: "A complete guide to Model Context Protocol tools, prompts, and resources.",
-        link: "#",
-      },
-      {
-        id: "blog-4",
-        image: "/images/blog-4.jpg",
-        alt: "React Native",
-        category: "Mobile",
-        date: "Jan 2026",
-        dateTime: "2026-01-01",
-        title: "Publishing a React Native npm Package",
-        text: "Lessons learned while building and maintaining TreeVisualizer.",
-        link: "#",
-      },
-      {
-        id: "blog-5",
-        image: "/images/blog-5.jpg",
-        alt: "System Design",
-        category: "System Design",
-        date: "Dec 2025",
-        dateTime: "2025-12-01",
-        title: "Designing Scalable Notification Systems",
-        text: "Using WebSockets, Redis, queues, and REST APIs for real-time applications.",
-        link: "#",
-      },
-      {
-        id: "blog-6",
-        image: "/images/blog-6.jpg",
-        alt: "Observability",
-        category: "DevOps",
-        date: "Dec 2025",
-        dateTime: "2025-12-15",
-        title: "Complete Observability with Prometheus & Grafana",
-        text: "Monitoring, logging, alerting, and containerized infrastructure using Docker.",
-        link: "#",
       },
     ],
   },
