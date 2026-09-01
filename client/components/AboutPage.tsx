@@ -44,11 +44,7 @@ export default function AboutPage({ isActive }: AboutPageProps) {
             {about.services.map((service) => (
               <li className="service-item" key={service.id || service.title}>
                 <div className="service-icon-box">
-                  <img
-                    src={service.icon}
-                    alt={service.iconAlt}
-                    width="40"
-                  />
+                  <ion-icon name={service.icon}></ion-icon>
                 </div>
                 <div className="service-content-box">
                   <h4 className="h4 service-item-title">{service.title}</h4>

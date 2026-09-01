@@ -4,7 +4,7 @@ import { useState } from "react";
 import { portfolioData } from "@/data/portfolioData";
 
 export default function Sidebar() {
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(true);
   const { profile } = portfolioData;
 
   return (
@@ -28,9 +28,10 @@ export default function Sidebar() {
         <button
           className="info_more-btn"
           onClick={() => setIsActive(!isActive)}
+          aria-label={isActive ? "Hide Contacts" : "Show Contacts"}
         >
-          <span>Show Contacts</span>
-          <ion-icon name="chevron-down"></ion-icon>
+          <span>{isActive ? "Hide Contacts" : "Show Contacts"}</span>
+          <ion-icon name={isActive ? "chevron-up" : "chevron-down"}></ion-icon>
         </button>
       </div>
 
@@ -76,6 +77,24 @@ export default function Sidebar() {
 
           <li className="contact-item">
             <div className="icon-box">
+              <ion-icon name="document-text-outline"></ion-icon>
+            </div>
+            <div className="contact-info">
+              <p className="contact-title">Resume</p>
+              <a
+                href={profile.contacts.resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="contact-link"
+                title="View Resume in Google Drive"
+              >
+                View Resume
+              </a>
+            </div>
+          </li>
+
+          <li className="contact-item">
+            <div className="icon-box">
               <ion-icon name="location-outline"></ion-icon>
             </div>
             <div className="contact-info">
@@ -90,7 +109,13 @@ export default function Sidebar() {
         <ul className="social-list">
           {profile.socials.map((social) => (
             <li className="social-item" key={social.name}>
-              <a href={social.url} className="social-link" title={social.name}>
+              <a
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-link"
+                title={social.name}
+              >
                 <ion-icon name={social.icon}></ion-icon>
               </a>
             </li>

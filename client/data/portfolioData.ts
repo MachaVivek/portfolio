@@ -13,6 +13,7 @@ export interface ContactInfo {
   };
   location: string;
   mapEmbedUrl: string;
+  resumeUrl: string;
 }
 
 export interface Profile {
@@ -29,6 +30,12 @@ export interface Service {
   iconAlt: string;
   title: string;
   text: string;
+}
+
+export interface AIAssistantInfo {
+  title: string;
+  badge?: string;
+  description: string;
 }
 
 export interface Achievement {
@@ -102,6 +109,7 @@ export interface PortfolioData {
     categories: string[];
     projects: ProjectItem[];
   };
+  aiAssistant: AIAssistantInfo;
 }
 
 export const portfolioData: PortfolioData = {
@@ -114,10 +122,11 @@ export const portfolioData: PortfolioData = {
       email: "machavivek19@gmail.com",
       phone: "+91 6281617463",
       birthday: {
-        display: "Not Provided",
-        iso: "",
+        display: "November 19, 2003",
+        iso: "2003-11-19",
       },
       location: "Hyderabad, Telangana, India",
+      resumeUrl: "https://drive.google.com/file/d/your-google-drive-resume-link/view?usp=sharing",
       mapEmbedUrl:
         "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d243647.3160923726!2d78.24323254863281!3d17.412281!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb99daeaebd2c7%3A0xae93b78392bafbc2!2sHyderabad%2C%20Telangana!5e0!3m2!1sen!2sin!4v1717000000000!5m2!1sen!2sin",
     },
@@ -151,31 +160,31 @@ export const portfolioData: PortfolioData = {
     services: [
       {
         id: "srv-web",
-        icon: "/images/icon-dev.svg",
-        iconAlt: "web development",
+        icon: "layers-outline",
+        iconAlt: "Full Stack Development",
         title: "Full Stack Development",
-        text: "Building scalable web applications using React, Node.js, Express, FastAPI, and PostgreSQL.",
+        text: "Building scalable web applications using React, Next.js, Node.js, Express, FastAPI, and PostgreSQL.",
       },
       {
         id: "srv-mobile",
-        icon: "/images/icon-app.svg",
-        iconAlt: "mobile development",
+        icon: "phone-portrait-outline",
+        iconAlt: "Mobile Apps",
         title: "Mobile Apps",
         text: "Cross-platform mobile application development using React Native, Expo, and TypeScript.",
       },
       {
         id: "srv-ai",
-        icon: "/images/icon-design.svg",
-        iconAlt: "AI development",
+        icon: "sparkles-outline",
+        iconAlt: "AI Engineering",
         title: "AI Engineering",
         text: "Developing RAG applications, LangChain pipelines, vector search, and MCP servers for intelligent systems.",
       },
       {
-        id: "srv-cloud",
-        icon: "/images/icon-photo.svg",
-        iconAlt: "backend",
-        title: "Backend & DevOps",
-        text: "REST APIs, Redis caching, Docker, observability, authentication, and production backend architecture.",
+        id: "srv-devops",
+        icon: "infinite-outline",
+        iconAlt: "DevOps",
+        title: "DevOps",
+        text: "Docker containerization, CI/CD with GitHub Actions, AWS cloud infrastructure (EC2, S3), and automated deployment.",
       },
     ],
 
@@ -513,6 +522,12 @@ export const portfolioData: PortfolioData = {
         link: "https://github.com/MachaVivek/Observability",
       },
     ],
+  },
+
+  aiAssistant: {
+    title: "Ask Vivek",
+    description:
+      "I can answer questions, explore my GitHub, and even send emails. I know my portfolio inside out, retrieve live context with RAG, and use real tools to help you go beyond simple Q&A.",
   },
 };
 

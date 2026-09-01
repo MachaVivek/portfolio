@@ -21,7 +21,7 @@ from fastapi.responses import StreamingResponse
 from app.agent.email_flow import is_cancellation, is_confirmation
 from app.agent.orchestrator import run_agent, run_agent_stream
 from app.config import settings
-from app.models import ChatRequest, ChatResponse
+from app.models import ChatRequest, ChatResponse, ContactFormRequest
 from app.rate_limit import get_client_ip, limiter
 from app.security import is_draft_authentic
 from app.services import chat_store
@@ -100,6 +100,23 @@ def _handle_pending_draft(
     )
 
 
+def _format_agent_error(exc: Exception) -> str:
+    """Format a clear, friendly message when tokens/quota are completed."""
+    err_str = str(exc).lower()
+    if any(
+        k in err_str
+        for k in ["resourceexhausted", "quota", "rate limit", "429", "token", "exhausted", "limit"]
+    ):
+        return (
+            "Daily AI token limit reached. Please check the detailed projects, skills, "
+            "and resume in the sections below, or send a direct message via the Contact tab!"
+        )
+    return (
+        "The assistant is temporarily unavailable. Please explore the detailed sections below "
+        "or reach out via the Contact tab!"
+    )
+
+
 @router.post("/chat", response_model=ChatResponse)
 @limiter.limit("10/minute")
 def chat(request: Request, chat_request: ChatRequest) -> ChatResponse:
@@ -135,7 +152,7 @@ def chat(request: Request, chat_request: ChatRequest) -> ChatResponse:
         reply, pending_action, tools_used = run_agent(chat_request.messages)
     except Exception as exc:
         logger.error("Agent failed: %s", exc)
-        raise HTTPException(status_code=503, detail="The assistant is unavailable.") from exc
+        return reply_with(_format_agent_error(exc))
 
     return reply_with(reply, pending_action=pending_action, tools_used=tools_used)
 
@@ -171,13 +188,7 @@ def chat_stream(request: Request, chat_request: ChatRequest) -> StreamingRespons
         )
 
     def events() -> Iterator[str]:
-        # Everything is inside this try. Once StreamingResponse starts, the status
-        # line and headers are already sent, so raising here cannot produce an HTTP
-        # error code — it just kills the connection mid-stream and the visitor sees
-        # a chat that silently stops. Every failure has to leave as an event instead.
         try:
-            # An email decision needs no AI and produces no progress worth
-            # streaming — it's answered in one event.
             if chat_request.pending_action:
                 outcome = _handle_pending_draft(
                     chat_request, last_message, conversation_id, visitor_ip
@@ -201,23 +212,17 @@ def chat_stream(request: Request, chat_request: ChatRequest) -> StreamingRespons
                         event["reply"], event["pending_action"], event["tools_used"]
                     )
                 else:
-                    # tool_start / tool_end / token, passed straight through.
                     yield _sse(event)
 
         except HTTPException as exc:
-            # Raised by the email path when Resend fails. Its .detail is written
-            # for visitors, so it's safe to show.
             logger.error("Stream failed: %s", exc.detail)
             yield _sse({"type": "error", "message": exc.detail})
-            # The draft is kept so the visitor can retry rather than losing it.
             yield finish(exc.detail, chat_request.pending_action, [])
 
         except Exception as exc:
             logger.error("Agent failed mid-stream: %s", exc)
-            message = "The assistant is unavailable."
+            message = _format_agent_error(exc)
             yield _sse({"type": "error", "message": message})
-            # A "done" always follows, so the client never waits forever for a
-            # terminal event that isn't coming.
             yield finish(message, chat_request.pending_action, [])
 
     return StreamingResponse(
@@ -231,3 +236,30 @@ def chat_stream(request: Request, chat_request: ChatRequest) -> StreamingRespons
             "X-Accel-Buffering": "no",
         },
     )
+
+
+@router.post("/contact")
+@limiter.limit("5/minute")
+def send_contact(request: Request, body: ContactFormRequest):
+    visitor_ip = get_client_ip(request)
+    try:
+        send_contact_email(
+            subject=f"New Portfolio Contact from {body.name}",
+            message=body.message,
+            visitor_name=body.name,
+            visitor_email=body.email,
+        )
+        chat_store.save_contact_submission(
+            conversation_id=None,
+            visitor_name=body.name,
+            visitor_email=body.email,
+            subject=f"Portfolio Contact Form: {body.name}",
+            message=body.message,
+        )
+        return {"ok": True, "message": "Message sent successfully!"}
+    except Exception as exc:
+        logger.error("Failed to send contact form email from %s: %s", visitor_ip, exc)
+        raise HTTPException(
+            status_code=503,
+            detail="Could not send your message right now. Please try emailing directly.",
+        ) from exc

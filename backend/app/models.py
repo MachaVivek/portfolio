@@ -44,3 +44,11 @@ class ChatResponse(BaseModel):
     # ["portfolio_search"] or ["github_repo_info"]. The frontend uses this to
     # show the matching character animation. Empty when no tool was needed.
     tools_used: list[str] = Field(default_factory=list)
+
+
+class ContactFormRequest(BaseModel):
+    """Payload sent from the portfolio contact form."""
+
+    name: str = Field(min_length=1, max_length=100)
+    email: str = Field(min_length=3, max_length=254)
+    message: str = Field(min_length=1, max_length=3000)

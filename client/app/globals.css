@@ -335,7 +335,7 @@ main.portfolio-app-main {
   min-width: 259px;
 }
 
-/* Bottom 2-card row: Details (Left) + Profile (Right) */
+/* Bottom 2-card row: Profile on top in mobile, Details (Left) + Profile (Right) on desktop */
 .bottom-cards-layout {
   display: flex;
   flex-direction: column;
@@ -343,9 +343,14 @@ main.portfolio-app-main {
   width: 100%;
 }
 
-.main-content {
+.bottom-cards-layout .sidebar {
+  order: -1;
+}
+
+.bottom-cards-layout .main-content {
   position: relative;
   width: 100%;
+  order: 1;
 }
 
 /*-----------------------------------*\
@@ -753,44 +758,28 @@ main.portfolio-app-main {
   filter: drop-shadow(0 12px 24px hsla(0, 0%, 0%, 0.65));
 }
 
-/* State Switcher Buttons */
-.ai-pose-selector-bar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  padding-top: 4px;
-}
-
-.pose-selector-label {
-  color: var(--light-gray-70);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-right: 2px;
-}
-
-.pose-pill-btn {
-  font-size: 11px;
-  padding: 4px 10px;
-  border-radius: 6px;
+/* AI Assistant Description Box (Below Avatar) */
+.ai-assistant-desc-box {
   background: var(--eerie-black-1);
-  color: var(--light-gray-70);
   border: 1px solid var(--jet);
-  transition: var(--transition-1);
+  border-left: 3px solid var(--accent-color);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-top: 14px;
+  box-shadow: var(--shadow-1);
+  transition: border-color var(--transition-1), box-shadow var(--transition-1);
 }
 
-.pose-pill-btn:hover {
-  color: var(--white-1);
-  border-color: var(--orange-yellow-crayola);
+.ai-assistant-desc-box:hover {
+  border-color: var(--accent-color);
+  box-shadow: 0 4px 16px var(--accent-glow);
 }
 
-.pose-pill-btn.active {
-  background: var(--orange-yellow-crayola);
-  color: var(--accent-contrast-text, var(--smoky-black));
-  border-color: var(--orange-yellow-crayola);
-  font-weight: var(--fw-600);
+.ai-assistant-desc-text {
+  color: var(--light-gray-70);
+  font-size: 12.5px;
+  line-height: 1.6;
+  margin: 0;
 }
 
 /* RIGHT COLUMN: Conversation Stream & Input */
@@ -966,45 +955,71 @@ main.portfolio-app-main {
 
 .ai-msg-text {
   word-break: break-word;
+  line-height: 1.5;
 }
 
-.ai-msg-text p {
+.ai-chat-p {
   margin-bottom: 8px;
 }
 
-.ai-msg-text p:last-child {
+.ai-chat-p:last-child {
   margin-bottom: 0;
 }
 
+.ai-chat-strong {
+  font-weight: 600;
+  color: var(--accent-color);
+}
+
+.ai-message-row.user .ai-chat-strong {
+  color: inherit;
+  font-weight: 700;
+}
+
+.ai-chat-link {
+  color: var(--accent-color);
+  text-decoration: underline;
+  font-weight: 500;
+  word-break: break-all;
+  transition: opacity 0.2s ease;
+}
+
+.ai-chat-link:hover {
+  opacity: 0.85;
+}
+
+.ai-chat-code {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--jet);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-family: monospace;
+  color: var(--white-1);
+}
+
+.ai-chat-ul {
+  margin: 6px 0;
+  padding-left: 18px;
+  list-style-type: disc;
+}
+
+.ai-chat-ol {
+  margin: 6px 0;
+  padding-left: 18px;
+  list-style-type: decimal;
+}
+
+.ai-chat-li {
+  margin-bottom: 4px;
+  line-height: 1.45;
+}
+
 .ai-content-h4 {
-  color: var(--orange-yellow-crayola);
+  color: var(--accent-color);
   font-size: 14px;
-  margin: 6px 0 4px;
-}
-
-.ai-content-li {
-  position: relative;
-  padding-left: 14px;
-  margin-bottom: 5px;
-  list-style: none;
-}
-
-.ai-content-li::before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  color: var(--orange-yellow-crayola);
-}
-
-.ai-content-li.ordered {
-  padding-left: 0;
-}
-.ai-content-li.ordered::before {
-  content: "";
-}
-
-.ai-spacer {
-  height: 6px;
+  font-weight: 600;
+  margin: 8px 0 4px;
 }
 
 .ai-msg-time {
@@ -1222,7 +1237,7 @@ main.portfolio-app-main {
   width: 100%;
 }
 
-.sidebar.active { max-height: 405px; }
+.sidebar.active { max-height: 850px; }
 
 .sidebar-info {
   position: relative;
@@ -1430,8 +1445,27 @@ main.portfolio-app-main {
   z-index: -1;
 }
 
-.service-icon-box { margin-bottom: 10px; }
-.service-icon-box img { margin: auto; }
+.service-icon-box {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-color);
+  font-size: 38px;
+  min-width: 44px;
+  line-height: 1;
+}
+
+.service-icon-box ion-icon {
+  font-size: 38px;
+  color: var(--accent-color);
+  transition: transform var(--transition-1), filter var(--transition-1);
+}
+
+.service-item:hover .service-icon-box ion-icon {
+  transform: scale(1.12);
+  filter: drop-shadow(0 0 10px var(--accent-glow));
+}
 .service-content-box { text-align: center; }
 .service-item-title { margin-bottom: 7px; }
 
@@ -1981,6 +2015,36 @@ textarea.form-input::-webkit-resizer { display: none; }
 .form-btn:disabled:hover { background: var(--border-gradient-onyx); }
 .form-btn:disabled:hover::before { background: var(--bg-gradient-jet); }
 
+/* Contact Form Status Notification */
+.form-status-alert {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  font-size: var(--fs-7);
+  line-height: 1.5;
+  animation: fadeInDown 0.3s ease;
+}
+
+.form-status-alert.success {
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  color: #4ade80;
+}
+
+.form-status-alert.error {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #f87171;
+}
+
+.form-status-alert ion-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
 /*-----------------------------------*\
   #RESPONSIVE DESIGN
 \*-----------------------------------*/
@@ -2027,7 +2091,7 @@ textarea.form-input::-webkit-resizer { display: none; }
     margin-bottom: 0;
   }
 
-  .sidebar.active { max-height: 584px; }
+  .sidebar.active { max-height: 850px; }
   .sidebar-info { gap: 25px; }
   .avatar-box { border-radius: 30px; }
   .avatar-box img { width: 120px; }
@@ -2071,7 +2135,8 @@ textarea.form-input::-webkit-resizer { display: none; }
 
   .service-icon-box {
     margin-bottom: 0;
-    margin-top: 5px;
+    margin-top: 2px;
+    justify-content: flex-start;
   }
 
   .service-content-box { text-align: left; }
@@ -2264,10 +2329,15 @@ textarea.form-input::-webkit-resizer { display: none; }
     gap: 25px;
   }
 
+  .bottom-cards-layout .sidebar {
+    order: 2;
+  }
+
   /* Left Details Card (Flexible Main Area) */
   .main-content {
     flex: 1;
     min-width: 0;
+    order: 1;
   }
 
   .navbar {

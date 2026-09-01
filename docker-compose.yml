@@ -1,10 +1,9 @@
-# Runs the whole stack — backend and frontend — with one command:
+# Runs the whole stack — backend and client — with one command:
 #
 #     docker compose up --build
 #
-# This is the "see everything running together" setup. For day-to-day frontend
-# work prefer `cd frontend && npm run dev` (faster hot reload on Mac), and
-# `cd backend && docker compose up` for backend-only work.
+# For day-to-day client work: `cd client && npm run dev`
+# For backend-only work: `cd backend && docker compose up`
 
 services:
   backend:
@@ -19,13 +18,13 @@ services:
       - ./backend/data:/app/data
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
-  frontend:
-    build: ./frontend
+  client:
+    build: ./client
     ports:
-      - "3001:3000"
+      - "3000:3000"
     environment:
       # "backend" is the service name above — inside the compose network that
-      # resolves to the backend container, so no localhost or ports needed.
+      # resolves to the backend container.
       BACKEND_URL: http://backend:8000
     depends_on:
       - backend
