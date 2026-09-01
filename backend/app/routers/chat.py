@@ -1,16 +1,3 @@
-"""The chat endpoints — the door into the whole assistant.
-
-Two ways in, same behaviour:
-  POST /chat         — waits, then returns the finished answer as JSON
-  POST /chat/stream  — reports progress as it happens (Server-Sent Events)
-
-The frontend uses /chat/stream so the character can change pose while the agent
-works. /chat stays for anything simpler that just wants an answer.
-
-One rule holds in both: answering "yes" or "no" to a waiting email draft is
-decided here in plain code, never by the AI, because sending can't be undone.
-"""
-
 import json
 import logging
 from collections.abc import Iterator
@@ -31,18 +18,14 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-
 class DraftOutcome:
-    """The result of dealing with a waiting email draft."""
 
     def __init__(self, reply: str, keep_draft: bool = False, tools_used: list[str] | None = None):
         self.reply = reply
         self.keep_draft = keep_draft
         self.tools_used = tools_used or []
 
-
 def _check_message(chat_request: ChatRequest) -> str:
-    """Pull out the newest message, rejecting anything too long."""
     last_message = chat_request.messages[-1].content
     if len(last_message) > settings.max_message_length:
         raise HTTPException(
@@ -51,15 +34,11 @@ def _check_message(chat_request: ChatRequest) -> str:
         )
     return last_message
 
-
 def _handle_pending_draft(
     chat_request: ChatRequest, last_message: str, conversation_id: str | None, visitor_ip: str
 ) -> DraftOutcome:
-    """Decide what to do about an email draft the visitor is being asked to confirm."""
     draft = chat_request.pending_action
 
-    # The draft comes back to us from the frontend, so check it's one we actually
-    # made and nobody edited it on the way.
     if not is_draft_authentic(draft):
         logger.warning("Rejected an unrecognised email draft from ip=%s", visitor_ip)
         return DraftOutcome(
@@ -78,7 +57,6 @@ def _handle_pending_draft(
             logger.error("Failed to send contact email: %s", exc)
             raise HTTPException(status_code=503, detail="Couldn't send that email.") from exc
 
-        # Kept so it's readable later in /admin, not just in the inbox.
         chat_store.save_contact_submission(
             conversation_id,
             draft.get("visitor_name", ""),
@@ -93,15 +71,12 @@ def _handle_pending_draft(
     if is_cancellation(last_message):
         return DraftOutcome("Okay, I won't send that.")
 
-    # Unclear answer — ask again rather than guessing, and keep the draft waiting.
     return DraftOutcome(
         "I still have a draft waiting — reply 'yes' to send it or 'no' to cancel.",
         keep_draft=True,
     )
 
-
 def _format_agent_error(exc: Exception) -> str:
-    """Format a clear, friendly message when tokens/quota are completed."""
     err_str = str(exc).lower()
     if any(
         k in err_str
@@ -115,7 +90,6 @@ def _format_agent_error(exc: Exception) -> str:
         "The assistant is temporarily unavailable. Please explore the detailed sections below "
         "or reach out via the Contact tab!"
     )
-
 
 @router.post("/chat", response_model=ChatResponse)
 @limiter.limit("10/minute")
@@ -156,14 +130,8 @@ def chat(request: Request, chat_request: ChatRequest) -> ChatResponse:
 
     return reply_with(reply, pending_action=pending_action, tools_used=tools_used)
 
-
 def _sse(event: dict) -> str:
-    """Format one event the way Server-Sent Events expects.
-
-    The blank line at the end is what tells the browser the event is complete.
-    """
     return f"data: {json.dumps(event)}\n\n"
-
 
 @router.post("/chat/stream")
 @limiter.limit("10/minute")
@@ -175,7 +143,6 @@ def chat_stream(request: Request, chat_request: ChatRequest) -> StreamingRespons
     chat_store.save_message(conversation_id, "user", last_message)
 
     def finish(reply: str, pending_action: dict | None, tools_used: list[str]) -> str:
-        """Save the reply and build the final event."""
         chat_store.save_message(conversation_id, "assistant", reply, tools_used)
         return _sse(
             {
@@ -231,12 +198,10 @@ def chat_stream(request: Request, chat_request: ChatRequest) -> StreamingRespons
         headers={
             "Cache-Control": "no-cache",
             "Connection": "keep-alive",
-            # Tells proxies (including Render's) not to buffer the response —
-            # without it the whole stream arrives at once and streaming is pointless.
+
             "X-Accel-Buffering": "no",
         },
     )
-
 
 @router.post("/contact")
 @limiter.limit("5/minute")

@@ -1,12 +1,5 @@
 import type { ChatRequest } from "@/types/chat";
 
-/**
- * Streaming proxy to the backend's /chat/stream endpoint.
- *
- * Streams Server-Sent Events (SSE) directly through to the client without buffering,
- * enabling real-time token streaming and immediate character state transitions.
- */
-
 const TIMEOUT_MS = 60_000;
 
 async function fetchBackend(path: string, options: RequestInit): Promise<Response> {

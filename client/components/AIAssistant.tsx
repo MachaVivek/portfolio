@@ -41,7 +41,6 @@ export default function AIAssistant() {
     },
   ]);
 
-  // Scroll ONLY internal chat feed without moving the webpage window
   useEffect(() => {
     if (chatScrollRef.current) {
       chatScrollRef.current.scrollTo({
@@ -55,7 +54,6 @@ export default function AIAssistant() {
   const [pendingDraft, setPendingDraft] = useState<EmailDraft | null>(null);
   const poseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Pre-warm backend on page mount
   useEffect(() => {
     fetch("/api/health").catch(() => {});
   }, []);
@@ -187,7 +185,7 @@ export default function AIAssistant() {
               }
             }
           } catch {
-            // Ignore malformed chunks
+
           }
         }
       }
@@ -234,7 +232,7 @@ export default function AIAssistant() {
   return (
     <section className="ai-assistant-top-block">
       <div className="ai-top-card">
-        {/* Left Side: Animated Avatar Stage */}
+
         <div className="ai-visualizer-column">
           <div className="ai-col-header">
             <div className="icon-box ai-icon-box">
@@ -249,12 +247,10 @@ export default function AIAssistant() {
             </div>
           </div>
 
-          {/* Animated Avatar Stage */}
           <div className="ai-bot-stage-wrapper">
             <CharacterArt state={characterState} />
           </div>
 
-          {/* Assistant Description Card Box (From JS Object) */}
           <div className="ai-assistant-desc-box">
             <p className="ai-assistant-desc-text">
               {portfolioData.aiAssistant.description}
@@ -262,7 +258,6 @@ export default function AIAssistant() {
           </div>
         </div>
 
-        {/* Right Side: Conversation Feed & Input */}
         <div className="ai-conversation-column">
           <div className="ai-chat-header">
             <div className="chat-header-title-wrap">
@@ -282,7 +277,6 @@ export default function AIAssistant() {
             </button>
           </div>
 
-          {/* Chat Messages Feed with wide custom scrollbar and draggable bob */}
           <div
             ref={chatScrollRef}
             className="ai-chat-messages custom-chat-scrollbar"
@@ -375,7 +369,6 @@ export default function AIAssistant() {
             ))}
           </div>
 
-          {/* Chat Input Bar */}
           <form className="ai-chat-input-form" onSubmit={handleSubmit}>
             <div className="ai-chat-input-wrapper">
               <input

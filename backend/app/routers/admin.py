@@ -1,9 +1,3 @@
-"""The /admin dashboard — Vivek's private view of what visitors have been asking.
-
-It's plain server-rendered HTML rather than a separate frontend app, because it's a
-single-user internal page and that keeps the whole thing in one deployable service.
-"""
-
 import secrets
 from html import escape
 
@@ -17,7 +11,6 @@ from app.services import chat_store
 
 router = APIRouter(prefix="/admin")
 
-# Triggers the browser's built-in username/password popup.
 security = HTTPBasic()
 
 PAGE_STYLE = """
@@ -36,21 +29,10 @@ button { padding: 0.4rem 0.8rem; }
 </style>
 """
 
-
 def require_admin(credentials: HTTPBasicCredentials) -> None:
-    """Block the request unless the right username and password were given.
-
-    Called from inside each endpoint rather than as a Depends(). FastAPI resolves
-    dependencies *before* the rate-limit wrapper runs, so a failed login raised
-    from a dependency would never be counted — leaving password guessing
-    completely unthrottled, the exact opposite of what the limit is for.
-    """
     if not settings.admin_username or not settings.admin_password:
         raise HTTPException(status_code=503, detail="Admin login is not configured yet.")
 
-    # compare_digest takes the same time whether the first character is wrong or the
-    # last one is, so an attacker can't narrow down the password by timing responses.
-    # Both checks always run (no early exit) for the same reason.
     valid_user = secrets.compare_digest(
         credentials.username.encode(), settings.admin_username.encode()
     )
@@ -62,17 +44,14 @@ def require_admin(credentials: HTTPBasicCredentials) -> None:
             status_code=401, detail="Invalid credentials", headers={"WWW-Authenticate": "Basic"}
         )
 
-
 def _table(headers: list[str], rows: str, empty_message: str) -> str:
-    """Build an HTML table, or a friendly note if there's nothing to show."""
     if not rows:
         return f"<p class='empty'>{empty_message}</p>"
     header_html = "".join(f"<th>{h}</th>" for h in headers)
     return f"<table><tr>{header_html}</tr>{rows}</table>"
 
-
 @router.get("", response_class=HTMLResponse)
-# Slows down anyone trying to guess the password by brute force.
+
 @limiter.limit("30/minute")
 def admin_home(
     request: Request,
@@ -85,8 +64,6 @@ def admin_home(
     contacts = chat_store.list_contact_submissions()
     search_results = chat_store.search_messages(q) if q else []
 
-    # Note: every value below goes through escape(). Visitors control this text, so
-    # without escaping someone could type HTML into the chat and have it run on this page.
     conversation_rows = "".join(
         f"<tr><td><a href='/admin/conversation/{escape(str(c['id']))}'>{escape(str(c['id']))}</a></td>"
         f"<td>{escape(c.get('visitor_ip') or '')}</td>"
@@ -129,7 +106,6 @@ def admin_home(
 {_table(["Name", "Email", "Subject", "Message", "When"], contact_rows, "No messages sent yet.")}
 </body></html>"""
 
-
 @router.get("/conversation/{conversation_id}", response_class=HTMLResponse)
 @limiter.limit("30/minute")
 def admin_conversation(
@@ -137,13 +113,12 @@ def admin_conversation(
     conversation_id: str,
     credentials: HTTPBasicCredentials = Depends(security),
 ) -> str:
-    """Read one conversation from start to finish."""
     require_admin(credentials)
 
     messages = chat_store.get_conversation_messages(conversation_id)
 
     def render(message: dict) -> str:
-        # Show which tools answered, when the assistant used any.
+
         tools = message.get("tool_used")
         tag = f" <span class='tools'>[{escape(tools)}]</span>" if tools else ""
         return (

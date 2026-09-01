@@ -11,7 +11,7 @@ export default function SkillsSection() {
   const renderIcon = (iconStr: string, name: string, className: string) => {
     if (iconStr && (iconStr.startsWith("http") || iconStr.startsWith("/")) && !brokenImages[name]) {
       return (
-        /* eslint-disable-next-line @next/next/no-img-element */
+
         <img
           src={iconStr}
           alt={name}
@@ -26,7 +26,7 @@ export default function SkillsSection() {
 
   return (
     <section className="skill-redesign">
-      {/* Category filter tabs */}
+
       <div className="skill-category-tabs">
         <button
           className={`skill-cat-tab${activeCategory === null ? " active" : ""}`}
@@ -45,19 +45,17 @@ export default function SkillsSection() {
         ))}
       </div>
 
-      {/* Categories */}
       <div className="skill-categories-wrap">
         {skillCategories
           .filter((cat) => activeCategory === null || activeCategory === cat.id)
           .map((cat) => (
             <div className="skill-category-section" key={cat.id}>
-              {/* Category header */}
+
               <div className="skill-category-header">
                 <h4 className="skill-category-label">{cat.label}</h4>
                 <div className="skill-category-line" />
               </div>
 
-              {/* Skill cards grid */}
               <ul className="skill-cards-grid">
                 {cat.skills.map((skill) => (
                   <li className="skill-card" key={skill.name} title={`${skill.name} — ${skill.value}%`}>

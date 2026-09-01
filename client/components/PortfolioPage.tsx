@@ -32,7 +32,7 @@ export default function PortfolioPage({ isActive }: PortfolioPageProps) {
       </header>
 
       <section className="projects">
-        {/* Desktop filter buttons */}
+
         <ul className="filter-list">
           {portfolio.categories.map((cat) => (
             <li className="filter-item" key={cat}>
@@ -46,7 +46,6 @@ export default function PortfolioPage({ isActive }: PortfolioPageProps) {
           ))}
         </ul>
 
-        {/* Mobile filter select */}
         <div className="filter-select-box">
           <button
             className={`filter-select${selectOpen ? " active" : ""}`}
@@ -69,7 +68,6 @@ export default function PortfolioPage({ isActive }: PortfolioPageProps) {
           </ul>
         </div>
 
-        {/* Project list */}
         <ul className="project-list">
           {portfolio.projects.map((project) => (
             <li

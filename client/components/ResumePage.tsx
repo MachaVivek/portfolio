@@ -15,7 +15,6 @@ export default function ResumePage({ isActive }: ResumePageProps) {
         <h2 className="h2 article-title">Resume</h2>
       </header>
 
-      {/* Education */}
       <section className="timeline">
         <div className="title-wrapper">
           <div className="icon-box">
@@ -35,7 +34,6 @@ export default function ResumePage({ isActive }: ResumePageProps) {
         </ol>
       </section>
 
-      {/* Experience */}
       <section className="timeline">
         <div className="title-wrapper">
           <div className="icon-box">

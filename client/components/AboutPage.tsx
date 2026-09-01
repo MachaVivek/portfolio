@@ -36,7 +36,6 @@ export default function AboutPage({ isActive }: AboutPageProps) {
           ))}
         </section>
 
-        {/* service */}
         <section className="service">
           <h3 className="h3 service-title">What i&apos;m doing</h3>
 
@@ -55,7 +54,6 @@ export default function AboutPage({ isActive }: AboutPageProps) {
           </ul>
         </section>
 
-        {/* achievements */}
         <section className="testimonials">
           <h3 className="h3 testimonials-title">Achievements</h3>
 
@@ -83,7 +81,6 @@ export default function AboutPage({ isActive }: AboutPageProps) {
           </ul>
         </section>
 
-        {/* achievements modal */}
         <div className={`modal-container${modalActive ? " active" : ""}`}>
           <div
             className={`overlay${modalActive ? " active" : ""}`}

@@ -1,7 +1,3 @@
-/**
- * Pinged when the portfolio page loads to pre-warm the backend if sleeping.
- */
-
 async function fetchBackend(path: string, options: RequestInit): Promise<Response> {
   const configured = process.env.BACKEND_URL;
   if (configured) {

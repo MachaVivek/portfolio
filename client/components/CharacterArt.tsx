@@ -15,10 +15,9 @@ interface CharacterArtProps {
 export default function CharacterArt({ state }: CharacterArtProps) {
   return (
     <div className={`avatar-dynamic-stage state-${state}`}>
-      {/* 1. Ambient Fluid Aura Glow (Seamless, no borders/box) */}
+
       <div className={`ambient-fluid-aura state-${state}`}></div>
 
-      {/* 2. State-Specific VFX Overlays */}
       {state === "idle" && (
         <div className="vfx-container vfx-idle">
           <div className="sparkle sp-1">
@@ -46,7 +45,7 @@ export default function CharacterArt({ state }: CharacterArtProps) {
 
       {state === "thinking" && (
         <div className="vfx-container vfx-thinking">
-          {/* Floating ? Symbols of Different Sizes Appearing & Disappearing */}
+
           <span className="question-symbol qm-1">?</span>
           <span className="question-symbol qm-2">?</span>
           <span className="question-symbol qm-3">?</span>
@@ -58,7 +57,7 @@ export default function CharacterArt({ state }: CharacterArtProps) {
 
       {state === "searching" && (
         <div className="vfx-container vfx-searching">
-          {/* Holographic Laser Scanline & HUD Search Brackets */}
+
           <div className="hud-corner top-left"></div>
           <div className="hud-corner top-right"></div>
           <div className="hud-corner bottom-left"></div>
@@ -73,7 +72,7 @@ export default function CharacterArt({ state }: CharacterArtProps) {
 
       {state === "coding" && (
         <div className="vfx-container vfx-coding">
-          {/* Cyber Code Glyphs */}
+
           <span className="code-glyph cg-1">&lt; / &gt;</span>
           <span className="code-glyph cg-2">&#123; &#125;</span>
           <span className="code-glyph cg-3">0101</span>
@@ -84,7 +83,7 @@ export default function CharacterArt({ state }: CharacterArtProps) {
 
       {state === "envelope" && (
         <div className="vfx-container vfx-envelope">
-          {/* Golden Letter & Radiant Warm Glow */}
+
           <div className="draft-beacon-wrap">
             <div className="draft-floating-badge">
               <ion-icon name="mail"></ion-icon>
@@ -101,9 +100,8 @@ export default function CharacterArt({ state }: CharacterArtProps) {
         </div>
       )}
 
-      {/* 3. Transparent Character Avatar with Breathing Float Animation */}
       <div className="avatar-figure-container">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
+
         <img
           src="/images/ai-avatar.png"
           alt="AI Assistant"

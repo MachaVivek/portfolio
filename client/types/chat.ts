@@ -1,7 +1,3 @@
-/**
- * Shared types for AI Assistant communication and character states.
- */
-
 export type Role = "user" | "assistant";
 
 export interface ChatMessage {

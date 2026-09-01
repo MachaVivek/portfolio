@@ -1,8 +1,3 @@
-/**
- * Contact form endpoint forwarding to the backend's POST /contact.
- * Uses Resend to send the message straight to Vivek's inbox.
- */
-
 const TIMEOUT_MS = 20_000;
 
 async function fetchBackend(path: string, options: RequestInit): Promise<Response> {

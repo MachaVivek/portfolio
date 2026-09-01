@@ -24,7 +24,7 @@ export default function ThemeSwitch({ className = "" }: ThemeSwitchProps) {
       <span className="switch-track">
         <span className="switch-knob">
           {isDark ? (
-            /* Crescent Moon Outline matching Image 1 Dark Mode */
+
             <svg
               className="switch-icon moon-icon"
               viewBox="0 0 24 24"
@@ -37,7 +37,7 @@ export default function ThemeSwitch({ className = "" }: ThemeSwitchProps) {
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
             </svg>
           ) : (
-            /* Sun Outline with rays matching Image 1 Light Mode */
+
             <svg
               className="switch-icon sun-icon"
               viewBox="0 0 24 24"

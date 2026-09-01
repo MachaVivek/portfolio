@@ -16,15 +16,13 @@ export default function Home() {
 
   return (
     <main className="portfolio-app-main">
-      {/* TOP BLOCK (Task 1): AI Assistant Card with Bot on Left & Conversation on Right */}
+
       <AIAssistant />
 
-      {/* THEME & COLOR CONTROLS (Below top block) */}
       <ThemeBar />
 
-      {/* BOTTOM ROW (Task 1): Details Card on Left & Profile Card on Right */}
       <div className="bottom-cards-layout">
-        {/* Left Card: Details & Content Tabs */}
+
         <div className="main-content">
           <Navbar activePage={activePage} onNavClick={setActivePage} />
 
@@ -35,7 +33,6 @@ export default function Home() {
           <ContactPage isActive={activePage === "contact"} />
         </div>
 
-        {/* Right Card: Profile Sidebar */}
         <Sidebar />
       </div>
     </main>

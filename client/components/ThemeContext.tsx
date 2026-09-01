@@ -14,7 +14,7 @@ export type ThemeMode = "dark" | "light";
 export interface AccentThemeOption {
   id: string;
   name: string;
-  primary: string; // hex
+  primary: string; 
   secondary: string;
   contrastText: string;
   rgb: string;
@@ -148,7 +148,6 @@ function applyAccentToDOM(accent: AccentThemeOption) {
   root.style.setProperty("--accent-text-gradient", accent.textGradient);
   root.style.setProperty("--accent-glow", accent.glow);
 
-  // Backward compatibility mappings
   root.style.setProperty("--orange-yellow-crayola", accent.primary);
   root.style.setProperty("--vegas-gold", accent.secondary);
   root.style.setProperty("--text-gradient-yellow", accent.textGradient);
@@ -191,7 +190,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     return "cyan";
   });
 
-  // Synchronize DOM whenever themeMode or accentId changes
   useEffect(() => {
     applyThemeModeToDOM(themeMode);
     const matched = ACCENT_COLORS.find((c) => c.id === accentId) || ACCENT_COLORS[1];

@@ -76,7 +76,6 @@ export default function RootLayout({
       <body>
         <ThemeProvider>{children}</ThemeProvider>
 
-        {/* Ionicons */}
         <Script
           type="module"
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"

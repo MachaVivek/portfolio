@@ -14,7 +14,7 @@ export default function ThemeBar() {
 
   return (
     <header className="theme-customizer-bar" aria-label="Theme and color controls">
-      {/* Left: Brand / Title */}
+
       <div className="theme-bar-brand">
         <div className="theme-brand-icon">
           <svg
@@ -41,9 +41,8 @@ export default function ThemeBar() {
         </div>
       </div>
 
-      {/* Right: Accent Colors + Theme Switch */}
       <div className="theme-controls-group">
-        {/* Accent Color Swatches */}
+
         <div className="accent-picker-wrap" role="radiogroup" aria-label="Select accent color">
           <span className="accent-picker-label">Accent:</span>
           <div className="accent-swatches">
@@ -82,10 +81,8 @@ export default function ThemeBar() {
           </div>
         </div>
 
-        {/* Divider */}
         <div className="theme-bar-divider" aria-hidden="true"></div>
 
-        {/* Light/Dark Mode Switch (matching Image 1) */}
         <div className="theme-switch-wrap">
           <ThemeSwitch />
         </div>
