@@ -59,6 +59,7 @@ export interface TimelineItem {
   title: string;
   period: string;
   text: string;
+  bullets?: string[];
 }
 
 export interface SkillItem {
@@ -244,15 +245,32 @@ export const portfolioData: PortfolioData = {
     experience: [
       {
         id: "exp-1",
-        title: "Associate Software Engineer • EKSAQ India Pvt Ltd",
+        title: "Associate Software Engineer • Eksaq India Private Limited",
         period: "Aug 2025 — Present",
-        text: "Developed 40+ REST APIs, implemented Redis caching, JWT authentication, Swagger documentation, API Gateway integration, and backend services supporting 2,000+ users.",
+        text: "Integrated new microservices features, engineered single-session authentication, AWS SNS/SES OTP workflows, Redis caching with 60% retrieval reduction, Razorpay gateway integration, 100ms video SDK, team leadership of 4 engineers, AWS S3 pre-signed URLs, and Expo OTA releases.",
+        bullets: [
+          "Integrated new features into an existing Microservices ecosystem, following architecture and coding standards.",
+          "Designed and implemented a single-session authentication system to prevent concurrent logins.",
+          "Built an OTP verification workflow using AWS SNS for SMS delivery and AWS SES for email verification.",
+          "Implemented Redis caching for cohort course content, reducing content retrieval time by 60%.",
+          "Integrated Razorpay Payment Gateway with secure webhook handling for payment verification and transactions.",
+          "Integrated third-party 100ms SDK to enable real-time video conferencing for live learning sessions.",
+          "Co-led a team of 4 engineers, reviewing pull requests and maintaining code quality across feature deliveries.",
+          "Developed file upload and download workflows using AWS S3 pre-signed URLs, eliminating direct server file handling.",
+          "Implemented push notifications, configured Expo Over-the-Air (OTA) updates, and enforced code quality through Husky Git hooks for automated pre-commit validation.",
+        ],
       },
       {
         id: "exp-2",
-        title: "Software Engineer Intern • EKSAQ India Pvt Ltd",
+        title: "Software Engineer Intern • Eksaq India Private Limited",
         period: "Dec 2024 — Jul 2025",
-        text: "Built 35+ reusable React Native components, integrated 40+ REST APIs, and contributed to production mobile and backend releases in an agile startup environment.",
+        text: "Developed Next.js SSR and CSR modules for SEO optimization, designed database schemas using Prisma ORM, authored Swagger/OpenAPI specs, and built scalable Redux state management architecture.",
+        bullets: [
+          "Developed server-side rendered (SSR) and client-side rendered (CSR) modules in Next.js to optimize SEO.",
+          "Designed relational database schemas and application models using Prisma ORM for query efficiency.",
+          "Authored and maintained Swagger/OpenAPI documentation for backend services for API discoverability.",
+          "Implemented scalable Redux-based state management and proactively identified, debugged, and resolved production issues to improve application stability and user experience.",
+        ],
       },
     ],
 

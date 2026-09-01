@@ -28,7 +28,7 @@ export default function ResumePage({ isActive }: ResumePageProps) {
           {resume.education.map((item) => (
             <li className="timeline-item" key={item.id || item.title}>
               <h4 className="h4 timeline-item-title">{item.title}</h4>
-              <span>{item.period}</span>
+              <span className="timeline-period">{item.period}</span>
               <p className="timeline-text">{item.text}</p>
             </li>
           ))}
@@ -48,8 +48,19 @@ export default function ResumePage({ isActive }: ResumePageProps) {
           {resume.experience.map((item) => (
             <li className="timeline-item" key={item.id || item.title}>
               <h4 className="h4 timeline-item-title">{item.title}</h4>
-              <span>{item.period}</span>
-              <p className="timeline-text">{item.text}</p>
+              <span className="timeline-period">{item.period}</span>
+              {item.bullets && item.bullets.length > 0 ? (
+                <ul className="timeline-bullets">
+                  {item.bullets.map((bullet, idx) => (
+                    <li key={idx} className="timeline-bullet-item">
+                      <span className="timeline-bullet-dot"></span>
+                      <p className="timeline-bullet-text">{bullet}</p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="timeline-text">{item.text}</p>
+              )}
             </li>
           ))}
         </ol>
