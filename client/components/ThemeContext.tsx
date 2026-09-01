@@ -27,18 +27,18 @@ export interface AccentThemeOption {
 
 export const ACCENT_COLORS: AccentThemeOption[] = [
   {
-    id: "yellow",
-    name: "Yellow (Default)",
-    primary: "#FFDB70",
-    secondary: "#E5A93C",
-    contrastText: "#111827",
-    rgb: "255, 219, 112",
+    id: "purple",
+    name: "Purple (Default)",
+    primary: "#8B5CF6",
+    secondary: "#7C3AED",
+    contrastText: "#ffffff",
+    rgb: "139, 92, 246",
     gradient1:
-      "linear-gradient(to bottom right, #ffdb70 0%, rgba(255, 219, 112, 0) 50%)",
+      "linear-gradient(to bottom right, #8b5cf6 0%, rgba(124, 58, 237, 0) 50%)",
     gradient2:
-      "linear-gradient(135deg, rgba(255, 219, 112, 0.25) 0%, rgba(229, 169, 60, 0) 60%), hsl(240, 2%, 13%)",
-    textGradient: "linear-gradient(to right, #ffdb70, #ffa62b)",
-    glow: "rgba(255, 219, 112, 0.4)",
+      "linear-gradient(135deg, rgba(139, 92, 246, 0.25) 0%, rgba(124, 58, 237, 0) 60%), hsl(240, 2%, 13%)",
+    textGradient: "linear-gradient(to right, #a78bfa, #8b5cf6)",
+    glow: "rgba(139, 92, 246, 0.4)",
   },
   {
     id: "cyan",
@@ -55,18 +55,18 @@ export const ACCENT_COLORS: AccentThemeOption[] = [
     glow: "rgba(34, 211, 238, 0.4)",
   },
   {
-    id: "violet",
-    name: "Violet",
-    primary: "#8B5CF6",
-    secondary: "#7C3AED",
-    contrastText: "#ffffff",
-    rgb: "139, 92, 246",
+    id: "yellow",
+    name: "Yellow",
+    primary: "#FFDB70",
+    secondary: "#E5A93C",
+    contrastText: "#111827",
+    rgb: "255, 219, 112",
     gradient1:
-      "linear-gradient(to bottom right, #8b5cf6 0%, rgba(124, 58, 237, 0) 50%)",
+      "linear-gradient(to bottom right, #ffdb70 0%, rgba(255, 219, 112, 0) 50%)",
     gradient2:
-      "linear-gradient(135deg, rgba(139, 92, 246, 0.25) 0%, rgba(124, 58, 237, 0) 60%), hsl(240, 2%, 13%)",
-    textGradient: "linear-gradient(to right, #a78bfa, #8b5cf6)",
-    glow: "rgba(139, 92, 246, 0.4)",
+      "linear-gradient(135deg, rgba(255, 219, 112, 0.25) 0%, rgba(229, 169, 60, 0) 60%), hsl(240, 2%, 13%)",
+    textGradient: "linear-gradient(to right, #ffdb70, #ffa62b)",
+    glow: "rgba(255, 219, 112, 0.4)",
   },
   {
     id: "blue",
@@ -182,7 +182,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         const savedAccent = localStorage.getItem(STORAGE_KEYS.ACCENT_ID);
         if (savedAccent) {
           const matched = ACCENT_COLORS.find(
-            (c) => c.id === savedAccent || c.primary.toLowerCase() === savedAccent.toLowerCase()
+            (c) =>
+              c.id === savedAccent ||
+              (savedAccent === "violet" && c.id === "purple") ||
+              c.primary.toLowerCase() === savedAccent.toLowerCase()
           );
           if (matched) return matched.id;
         }
@@ -193,7 +196,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     applyThemeModeToDOM(themeMode);
-    const matched = ACCENT_COLORS.find((c) => c.id === accentId) || ACCENT_COLORS[1];
+    const matched = ACCENT_COLORS.find((c) => c.id === accentId) || ACCENT_COLORS[0];
     applyAccentToDOM(matched);
   }, [themeMode, accentId]);
 

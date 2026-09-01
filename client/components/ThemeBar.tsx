@@ -4,13 +4,15 @@ import React from "react";
 import { useTheme, ACCENT_COLORS } from "./ThemeContext";
 import ThemeSwitch from "./ThemeSwitch";
 
+const emptySubscribe = () => () => { };
+
 export default function ThemeBar() {
   const { accentId, setAccentId, themeMode } = useTheme();
-  const [mounted, setMounted] = React.useState(false);
-
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = React.useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
 
   return (
     <header className="theme-customizer-bar" aria-label="Theme and color controls">
@@ -47,7 +49,7 @@ export default function ThemeBar() {
           <span className="accent-picker-label">Accent:</span>
           <div className="accent-swatches">
             {ACCENT_COLORS.map((color) => {
-              const isSelected = mounted ? accentId === color.id : color.id === "yellow";
+              const isSelected = mounted ? accentId === color.id : color.id === "purple";
               return (
                 <button
                   key={color.id}

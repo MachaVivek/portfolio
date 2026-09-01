@@ -20,7 +20,7 @@ export const STORAGE_KEYS = {
 
 export const APP_DEFAULTS = {
   THEME_MODE: "dark",
-  ACCENT_ID: "cyan",
+  ACCENT_ID: "purple",
   CONTACT_EMAIL: "machavivek19@gmail.com",
 } as const;
 
