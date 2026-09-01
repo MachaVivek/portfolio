@@ -22,6 +22,8 @@ services:
     build: ./client
     ports:
       - "3000:3000"
+    env_file:
+      - ./client/.env
     environment:
       # "backend" is the service name above — inside the compose network that
       # resolves to the backend container.
