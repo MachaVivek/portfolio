@@ -28,19 +28,25 @@ def portfolio_search(query: str) -> str:
 @tool
 def github_repo_info(repo_name: str) -> str:
     """Retrieve details, description, language, topics, and README for a specific allowed GitHub repository."""
-    allowed = settings.github_allowed_repos_list
-    if not allowed:
+    clean_name = repo_name.strip().split("/")[-1].lower()
+    allowed_map = {
+        r.strip().split("/")[-1].lower(): r.strip().split("/")[-1]
+        for r in settings.github_allowed_repos_list
+        if r.strip()
+    }
+    if not allowed_map:
         return "No repositories are available to look up."
-    if repo_name not in allowed:
-        return f"'{repo_name}' is not one of the repositories I can look up."
+    if clean_name not in allowed_map:
+        return f"'{repo_name}' is not in my allowed repository list. Available repositories: {', '.join(allowed_map.values())}."
     if not settings.github_username:
         return "GitHub lookup is not configured yet."
 
+    target_repo = allowed_map[clean_name]
     try:
-        details = get_repo_details(repo_name)
+        details = get_repo_details(target_repo)
     except Exception as exc:
-        logger.warning("GitHub lookup failed for %s: %s", repo_name, exc)
-        return f"Could not fetch repo '{repo_name}': {exc}"
+        logger.warning("GitHub lookup failed for %s: %s", target_repo, exc)
+        return f"Could not fetch repo '{target_repo}': {exc}"
 
     return (
         f"Name: {details['name']}\n"

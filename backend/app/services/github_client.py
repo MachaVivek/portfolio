@@ -20,13 +20,14 @@ def _get_http_client() -> httpx.Client:
     )
 
 def get_repo_details(repo_name: str) -> dict:
+    clean_repo = repo_name.strip().split("/")[-1]
     client = _get_http_client()
-    repo_resp = client.get(f"{GITHUB_API_URL}/repos/{settings.github_username}/{repo_name}")
+    repo_resp = client.get(f"{GITHUB_API_URL}/repos/{settings.github_username}/{clean_repo}")
     repo_resp.raise_for_status()                                                     
     repo_data = repo_resp.json()
 
     readme_resp = client.get(
-        f"{GITHUB_API}/repos/{settings.github_username}/{repo_name}/readme",
+        f"{GITHUB_API_URL}/repos/{settings.github_username}/{clean_repo}/readme",
         headers={"Accept": "application/vnd.github.raw"},
     )
 
@@ -38,5 +39,5 @@ def get_repo_details(repo_name: str) -> dict:
         "language": repo_data.get("language"),
         "topics": repo_data.get("topics", []),
         "url": repo_data.get("html_url"),
-        "readme": readme_text[:README_CHAR_LIMIT],
+        "readme": readme_text[:GITHUB_README_CHAR_LIMIT],
     }
