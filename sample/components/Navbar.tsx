@@ -19,7 +19,6 @@ export default function Navbar({ activePage, onNavClick }: NavbarProps) {
               }`}
               onClick={() => {
                 onNavClick(item.toLowerCase());
-                window.scrollTo(0, 0);
               }}
             >
               {item}

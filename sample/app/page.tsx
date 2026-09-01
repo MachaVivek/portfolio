@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import ThemeBar from "@/components/ThemeBar";
 import AIAssistant from "@/components/AIAssistant";
 import Navbar from "@/components/Navbar";
 import AboutPage from "@/components/AboutPage";
@@ -17,6 +18,9 @@ export default function Home() {
     <main className="portfolio-app-main">
       {/* TOP BLOCK (Task 1): AI Assistant Card with Bot on Left & Conversation on Right */}
       <AIAssistant />
+
+      {/* THEME & COLOR CONTROLS (Below top block) */}
+      <ThemeBar />
 
       {/* BOTTOM ROW (Task 1): Details Card on Left & Profile Card on Right */}
       <div className="bottom-cards-layout">
