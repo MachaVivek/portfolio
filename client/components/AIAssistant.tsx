@@ -362,10 +362,10 @@ export default function AIAssistant() {
                     <EmailDraftCard
                       draft={msg.draft}
                       onSend={() => {
-                        sendMessage("Yes, please send it");
+                        sendMessage("yes");
                       }}
                       onCancel={() => {
-                        sendMessage("No, cancel it");
+                        sendMessage("no");
                       }}
                     />
                   )}

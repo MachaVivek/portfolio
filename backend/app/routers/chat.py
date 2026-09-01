@@ -47,17 +47,6 @@ def _handle_pending_draft(
         )
 
     if is_confirmation(last_message):
-        try:
-            send_contact_email(
-                subject=draft.get("subject", ""),
-                message=draft.get("message", ""),
-                visitor_name=draft.get("visitor_name", ""),
-                visitor_email=draft.get("visitor_email", ""),
-            )
-        except Exception as exc:
-            logger.error("Failed to send contact email: %s", exc)
-            raise HTTPException(status_code=503, detail="Couldn't send that email.") from exc
-
         chat_store.save_contact_submission(
             conversation_id,
             draft.get("visitor_name", ""),
@@ -65,6 +54,22 @@ def _handle_pending_draft(
             draft.get("subject", ""),
             draft.get("message", ""),
         )
+
+        if settings.resend_api_key and settings.resend_from_email and settings.contact_email_to:
+            try:
+                send_contact_email(
+                    subject=draft.get("subject", ""),
+                    message=draft.get("message", ""),
+                    visitor_name=draft.get("visitor_name", ""),
+                    visitor_email=draft.get("visitor_email", ""),
+                )
+            except Exception as exc:
+                logger.error("Failed to send contact email via Resend: %s", exc)
+                return DraftOutcome(
+                    "Your message has been received and saved! Vivek will get back to you soon.",
+                    tools_used=["send_contact_email"],
+                )
+
         return DraftOutcome(
             "Sent! Vivek will get back to you soon.", tools_used=["send_contact_email"]
         )

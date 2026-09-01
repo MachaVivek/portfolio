@@ -40,7 +40,7 @@ export default function EmailDraftCard({
           <span>Message Dispatched</span>
         </div>
         <p className="draft-confirmation-text">
-          Email confirmed and sent to Richard! He will get back to you shortly.
+          Email confirmed and sent to Vivek! He will get back to you shortly.
         </p>
       </div>
     );
