@@ -95,7 +95,7 @@ export default function AboutPage({ isActive }: AboutPageProps) {
             <div className="modal-img-wrapper">
               <figure className="modal-avatar-box">
                 <img
-                  src={modalData?.avatar || "/images/avatar-1.png"}
+                  src={modalData?.avatar || "/images/avatar.png"}
                   alt={modalData?.name || ""}
                   width="80"
                 />

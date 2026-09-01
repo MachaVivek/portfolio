@@ -26,7 +26,7 @@ export const APP_DEFAULTS = {
 
 export const ASSET_PATHS = {
   AI_AVATAR: "/images/ai-avatar.png",
-  LOGO_ICO: "/images/logo.ico",
+  FAVICON: "/images/avatar.png",
 } as const;
 
 export const EXTERNAL_SCRIPTS = {

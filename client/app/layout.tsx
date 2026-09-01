@@ -10,7 +10,9 @@ export const metadata: Metadata = {
   title: `${portfolioData.profile.name} - Personal Portfolio`,
   description: `Personal portfolio website - ${portfolioData.profile.name}, ${portfolioData.profile.title}`,
   icons: {
-    icon: ASSET_PATHS.LOGO_ICO,
+    icon: ASSET_PATHS.FAVICON,
+    shortcut: ASSET_PATHS.FAVICON,
+    apple: ASSET_PATHS.FAVICON,
   },
 };
 
