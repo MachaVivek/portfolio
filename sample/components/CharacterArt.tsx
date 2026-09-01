@@ -21,10 +21,26 @@ export default function CharacterArt({ state }: CharacterArtProps) {
       {/* 2. State-Specific VFX Overlays */}
       {state === "idle" && (
         <div className="vfx-container vfx-idle">
-          <div className="sparkle sp-1">✦</div>
-          <div className="sparkle sp-2">✨</div>
-          <div className="sparkle sp-3">✦</div>
-          <div className="sparkle sp-4">✨</div>
+          <div className="sparkle sp-1">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+              <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
+            </svg>
+          </div>
+          <div className="sparkle sp-2">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+              <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
+            </svg>
+          </div>
+          <div className="sparkle sp-3">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+              <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
+            </svg>
+          </div>
+          <div className="sparkle sp-4">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+              <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
+            </svg>
+          </div>
         </div>
       )}
 

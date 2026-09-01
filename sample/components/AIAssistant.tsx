@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, FormEvent } from "react";
 import CharacterArt, { CharacterState } from "@/components/CharacterArt";
 import EmailDraftCard, { EmailDraft } from "@/components/EmailDraftCard";
+import { portfolioData } from "@/data/portfolioData";
 
 interface Message {
   id: string;
@@ -27,13 +28,14 @@ export default function AIAssistant() {
   const [isTyping, setIsTyping] = useState(false);
   const [input, setInput] = useState("");
   const chatScrollRef = useRef<HTMLDivElement>(null);
+  const { profile, portfolio, resume } = portfolioData;
 
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome-1",
       role: "assistant",
       content:
-        "Hello! I am **Richard's AI Assistant**.\n\nAsk me about his projects, technical stack, or draft an email directly to him!",
+        `Hello! I am **${profile.name}'s AI Assistant**.\n\nAsk me about his projects, technical stack, or draft an email directly to him!`,
       timestamp: "Just now",
     },
   ]);
@@ -57,6 +59,11 @@ export default function AIAssistant() {
       setTimeout(() => {
         setIsTyping(false);
         setCharacterState("idle");
+        const topProjects = portfolio.projects.slice(0, 4);
+        const projectsList = topProjects
+          .map((p, idx) => `${idx + 1}. **${p.title}** (${p.category})`)
+          .join("\n");
+
         setMessages((prev) => [
           ...prev,
           {
@@ -64,7 +71,7 @@ export default function AIAssistant() {
             role: "assistant",
             toolUsed: "portfolio_search",
             content:
-              "### 🚀 Featured Projects\n\nRichard has built several production web & mobile applications:\n\n1. **Finance Dashboard** — Real-time fintech analytics suite with automated reporting pipelines.\n2. **Orizon Web Platform** — Next.js high-performance web app with smooth micro-animations.\n3. **Fundo App** — End-to-end design system & interactive mobile user experience.\n4. **Task Manager** — Full-stack workflow optimization tool.\n\nCheck out the portfolio section below for live project details!",
+              `### 🚀 Featured Projects\n\n${profile.name} has built several production applications:\n\n${projectsList}\n\nCheck out the portfolio section below for live project details!`,
             timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
           },
         ]);
@@ -103,7 +110,7 @@ export default function AIAssistant() {
               visitor_name: "Portfolio Visitor",
               visitor_email: "visitor@example.com",
               message:
-                "Hi Richard,\n\nI was browsing your portfolio and loved your work. I'd love to connect regarding an upcoming opportunity!",
+                `Hi ${profile.name},\n\nI was browsing your portfolio and loved your work. I'd love to connect regarding an upcoming opportunity!`,
             },
             timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
           },
@@ -114,6 +121,13 @@ export default function AIAssistant() {
       setTimeout(() => {
         setIsTyping(false);
         setCharacterState("idle");
+        const expList = resume.experience
+          .map((e) => `- **${e.title}** (${e.period})`)
+          .join("\n");
+        const eduList = resume.education
+          .map((ed) => `- **${ed.title}** (${ed.period})`)
+          .join("\n");
+
         setMessages((prev) => [
           ...prev,
           {
@@ -121,7 +135,27 @@ export default function AIAssistant() {
             role: "assistant",
             toolUsed: "portfolio_search",
             content:
-              "### 🎓 Career Summary\n\n- **Creative Director** (2015 — Present): Leading design and frontend engineering.\n- **Art Director** (2013 — 2015): Branding and visual systems.\n- **Web Designer** (2010 — 2013): Interactive web design.\n- **Education**: University School of the Arts & New York Academy of Art.",
+              `### 🎓 Career & Background Summary\n\n**Experience:**\n${expList}\n\n**Education:**\n${eduList}`,
+            timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+          },
+        ]);
+      }, 1100);
+    } else if (q.includes("achievement") || q.includes("award") || q.includes("rank") || q.includes("honor") || q.includes("competition")) {
+      setCharacterState("searching");
+      setTimeout(() => {
+        setIsTyping(false);
+        setCharacterState("idle");
+        const achList = (portfolioData.about.achievements || [])
+          .map((a) => `- 🏆 **${a.name}**: ${a.text}`)
+          .join("\n\n");
+
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: Date.now().toString(),
+            role: "assistant",
+            toolUsed: "portfolio_search",
+            content: `### 🏆 Key Achievements & Honors\n\n${achList}`,
             timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
           },
         ]);
@@ -137,7 +171,7 @@ export default function AIAssistant() {
             id: Date.now().toString(),
             role: "assistant",
             content:
-              `I received your message: *"${userQuery}"*.\n\nFeel free to explore the details below (About, Resume, Portfolio, Blog, Contact) or ask me to draft a message to Richard!`,
+              `I received your message: *"${userQuery}"*.\n\nFeel free to explore the details below (About, Resume, Portfolio, Blog, Contact) or ask me to draft a message to ${profile.name}!`,
             timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
           },
         ]);
@@ -225,7 +259,9 @@ export default function AIAssistant() {
         <div className="ai-conversation-column">
           <div className="ai-chat-header">
             <div className="chat-header-title-wrap">
-              <span className="chat-header-sparkle">✨</span>
+              <span className="chat-header-sparkle">
+                <ion-icon name="sparkles"></ion-icon>
+              </span>
               <h3 className="h5 chat-header-title">Live Chat</h3>
             </div>
             <button

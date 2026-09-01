@@ -5,7 +5,7 @@ interface NavbarProps {
   onNavClick: (page: string) => void;
 }
 
-const NAV_ITEMS = ["About", "Resume", "Portfolio", "Blog", "Contact"];
+const NAV_ITEMS = ["About", "Resume", "Projects", "Skills", "Contact"];
 
 export default function Navbar({ activePage, onNavClick }: NavbarProps) {
   return (

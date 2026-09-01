@@ -1,0 +1,7 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <rect x="5" y="5" width="90" height="90" rx="16" fill="#FF9900"/>
+  <path d="M50 20L75 34.5V65.5L50 80L25 65.5V34.5L50 20Z" fill="#FFFFFF" opacity="0.9"/>
+  <path d="M50 24L71 36V64L50 76L29 64V36L50 24Z" fill="#FF9900"/>
+  <path d="M50 32L65 40.5V59.5L50 68L35 59.5V40.5L50 32Z" fill="#FFFFFF"/>
+  <text x="50" y="55" font-family="system-ui, sans-serif" font-size="14" font-weight="900" fill="#FF9900" text-anchor="middle">EC2</text>
+</svg>

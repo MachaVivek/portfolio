@@ -164,39 +164,42 @@ function applyThemeModeToDOM(mode: ThemeMode) {
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [themeMode, setThemeModeState] = useState<ThemeMode>("dark");
-  const [accentId, setAccentIdState] = useState<string>("yellow");
-
-  // Read saved preferences on client mount
-  useEffect(() => {
-    try {
-      const savedMode = localStorage.getItem("portfolio-theme-mode") as ThemeMode | null;
-      if (savedMode === "light" || savedMode === "dark") {
-        setThemeModeState(savedMode);
-        applyThemeModeToDOM(savedMode);
-      } else {
-        applyThemeModeToDOM("dark");
-      }
-
-      const savedAccent = localStorage.getItem("portfolio-accent-id");
-      const matched = ACCENT_COLORS.find(
-        (c) => c.id === savedAccent || c.primary.toLowerCase() === savedAccent?.toLowerCase()
-      );
-      if (matched) {
-        setAccentIdState(matched.id);
-        applyAccentToDOM(matched);
-      } else {
-        const defaultAccent = ACCENT_COLORS[0];
-        applyAccentToDOM(defaultAccent);
-      }
-    } catch {
-      // Fallback
+  const [themeMode, setThemeModeState] = useState<ThemeMode>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const savedMode = localStorage.getItem("portfolio-theme-mode") as ThemeMode | null;
+        if (savedMode === "light" || savedMode === "dark") {
+          return savedMode;
+        }
+      } catch {}
     }
-  }, []);
+    return "dark";
+  });
+
+  const [accentId, setAccentIdState] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const savedAccent = localStorage.getItem("portfolio-accent-id");
+        if (savedAccent) {
+          const matched = ACCENT_COLORS.find(
+            (c) => c.id === savedAccent || c.primary.toLowerCase() === savedAccent.toLowerCase()
+          );
+          if (matched) return matched.id;
+        }
+      } catch {}
+    }
+    return "cyan";
+  });
+
+  // Synchronize DOM whenever themeMode or accentId changes
+  useEffect(() => {
+    applyThemeModeToDOM(themeMode);
+    const matched = ACCENT_COLORS.find((c) => c.id === accentId) || ACCENT_COLORS[1];
+    applyAccentToDOM(matched);
+  }, [themeMode, accentId]);
 
   const setThemeMode = useCallback((mode: ThemeMode) => {
     setThemeModeState(mode);
-    applyThemeModeToDOM(mode);
     try {
       localStorage.setItem("portfolio-theme-mode", mode);
     } catch {}
@@ -205,7 +208,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const toggleThemeMode = useCallback(() => {
     setThemeModeState((prev) => {
       const nextMode: ThemeMode = prev === "dark" ? "light" : "dark";
-      applyThemeModeToDOM(nextMode);
       try {
         localStorage.setItem("portfolio-theme-mode", nextMode);
       } catch {}
@@ -217,7 +219,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const matched = ACCENT_COLORS.find((c) => c.id === id);
     if (matched) {
       setAccentIdState(id);
-      applyAccentToDOM(matched);
       try {
         localStorage.setItem("portfolio-accent-id", id);
       } catch {}

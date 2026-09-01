@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeContext";
+import { portfolioData } from "@/data/portfolioData";
 
 export const metadata: Metadata = {
-  title: "vCard - Personal Portfolio",
-  description: "Personal portfolio website - Richard Hanrick, Web Developer",
+  title: `${portfolioData.profile.name} - Personal Portfolio`,
+  description: `Personal portfolio website - ${portfolioData.profile.name}, ${portfolioData.profile.title}`,
   icons: {
     icon: "/images/logo.ico",
   },
@@ -31,8 +32,8 @@ const themeInitScript = `
       pink: { primary: '#EC4899', secondary: '#DB2777', ct: '#ffffff', rgb: '236, 72, 153', g1: 'linear-gradient(to bottom right, #ec4899 0%, rgba(219, 39, 119, 0) 50%)', g2: 'linear-gradient(135deg, rgba(236, 72, 153, 0.25) 0%, rgba(219, 39, 119, 0) 60%), hsl(240, 2%, 13%)', tg: 'linear-gradient(to right, #f472b6, #ec4899)', glow: 'rgba(236, 72, 153, 0.4)' },
       lime: { primary: '#A3E635', secondary: '#84CC16', ct: '#111827', rgb: '163, 230, 53', g1: 'linear-gradient(to bottom right, #a3e635 0%, rgba(132, 204, 22, 0) 50%)', g2: 'linear-gradient(135deg, rgba(163, 230, 53, 0.25) 0%, rgba(132, 204, 22, 0) 60%), hsl(240, 2%, 13%)', tg: 'linear-gradient(to right, #bef264, #a3e635)', glow: 'rgba(163, 230, 53, 0.4)' }
     };
-    var accentId = localStorage.getItem('portfolio-accent-id') || 'yellow';
-    var c = palette[accentId] || palette.yellow;
+    var accentId = localStorage.getItem('portfolio-accent-id') || 'cyan';
+    var c = palette[accentId] || palette.cyan;
     var root = document.documentElement;
     root.style.setProperty('--accent-color', c.primary);
     root.style.setProperty('--accent-secondary', c.secondary);

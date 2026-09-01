@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import AboutPage from "@/components/AboutPage";
 import ResumePage from "@/components/ResumePage";
 import PortfolioPage from "@/components/PortfolioPage";
-import BlogPage from "@/components/BlogPage";
+import SkillsPage from "@/components/SkillsPage";
 import ContactPage from "@/components/ContactPage";
 import Sidebar from "@/components/Sidebar";
 
@@ -30,8 +30,8 @@ export default function Home() {
 
           <AboutPage isActive={activePage === "about"} />
           <ResumePage isActive={activePage === "resume"} />
-          <PortfolioPage isActive={activePage === "portfolio"} />
-          <BlogPage isActive={activePage === "blog"} />
+          <PortfolioPage isActive={activePage === "projects"} />
+          <SkillsPage isActive={activePage === "skills"} />
           <ContactPage isActive={activePage === "contact"} />
         </div>
 

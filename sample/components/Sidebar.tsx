@@ -1,26 +1,28 @@
 "use client";
 
 import { useState } from "react";
+import { portfolioData } from "@/data/portfolioData";
 
 export default function Sidebar() {
   const [isActive, setIsActive] = useState(false);
+  const { profile } = portfolioData;
 
   return (
     <aside className={`sidebar${isActive ? " active" : ""}`}>
       <div className="sidebar-info">
         <figure className="avatar-box">
           <img
-            src="/images/my-avatar.png"
-            alt="Richard hanrick"
+            src={profile.avatar}
+            alt={profile.name}
             width="80"
           />
         </figure>
 
         <div className="info-content">
-          <h1 className="name" title="Richard hanrick">
-            Richard hanrick
+          <h1 className="name" title={profile.name}>
+            {profile.name}
           </h1>
-          <p className="title">Web developer</p>
+          <p className="title">{profile.title}</p>
         </div>
 
         <button
@@ -42,8 +44,8 @@ export default function Sidebar() {
             </div>
             <div className="contact-info">
               <p className="contact-title">Email</p>
-              <a href="mailto:richard@example.com" className="contact-link">
-                richard@example.com
+              <a href={`mailto:${profile.contacts.email}`} className="contact-link">
+                {profile.contacts.email}
               </a>
             </div>
           </li>
@@ -54,8 +56,8 @@ export default function Sidebar() {
             </div>
             <div className="contact-info">
               <p className="contact-title">Phone</p>
-              <a href="tel:+12133522795" className="contact-link">
-                +1 (213) 352-2795
+              <a href={`tel:${profile.contacts.phone}`} className="contact-link">
+                {profile.contacts.phone}
               </a>
             </div>
           </li>
@@ -66,7 +68,9 @@ export default function Sidebar() {
             </div>
             <div className="contact-info">
               <p className="contact-title">Birthday</p>
-              <time dateTime="1982-06-23">June 23, 1982</time>
+              <time dateTime={profile.contacts.birthday.iso}>
+                {profile.contacts.birthday.display}
+              </time>
             </div>
           </li>
 
@@ -76,7 +80,7 @@ export default function Sidebar() {
             </div>
             <div className="contact-info">
               <p className="contact-title">Location</p>
-              <address>Sacramento, California, USA</address>
+              <address>{profile.contacts.location}</address>
             </div>
           </li>
         </ul>
@@ -84,21 +88,13 @@ export default function Sidebar() {
         <div className="separator"></div>
 
         <ul className="social-list">
-          <li className="social-item">
-            <a href="#" className="social-link">
-              <ion-icon name="logo-facebook"></ion-icon>
-            </a>
-          </li>
-          <li className="social-item">
-            <a href="#" className="social-link">
-              <ion-icon name="logo-twitter"></ion-icon>
-            </a>
-          </li>
-          <li className="social-item">
-            <a href="#" className="social-link">
-              <ion-icon name="logo-instagram"></ion-icon>
-            </a>
-          </li>
+          {profile.socials.map((social) => (
+            <li className="social-item" key={social.name}>
+              <a href={social.url} className="social-link" title={social.name}>
+                <ion-icon name={social.icon}></ion-icon>
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
     </aside>
