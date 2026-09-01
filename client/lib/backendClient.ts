@@ -13,7 +13,7 @@ export async function fetchBackend(
     headers.set("X-Real-IP", clientIp);
   }
 
-  const configured = process.env.BACKEND_URL;
+  const configured = process.env.NEXT_PUBLIC_API_URL;
   if (configured) {
     return fetch(`${configured}${path}`, { ...options, headers });
   }

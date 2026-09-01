@@ -281,11 +281,11 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 | `ADMIN_USERNAME` | Optional | Basic Auth username for `/admin` |
 | `ADMIN_PASSWORD` | Optional | Basic Auth password for `/admin` |
 
-### Client (`client/.env.local`)
+### Client (`client/.env`)
 
 | Variable | Required | Description |
 | :--- | :---: | :--- |
-| `BACKEND_URL` | Optional | Base URL of the backend API (Defaults to `http://localhost:8002` or `http://backend:8000`) |
+| `NEXT_PUBLIC_API_URL` | Optional | Base URL of the backend API (Defaults to `http://localhost:8002` or `http://backend:8000`) |
 
 ---
 
@@ -314,7 +314,7 @@ The repository includes a ready-to-use [`render.yaml`](render.yaml) specificatio
 1. Import the repository on [Vercel](https://vercel.com/).
 2. Set the **Root Directory** to `client`.
 3. Set the Environment Variable:
-   - `BACKEND_URL`: `https://your-backend-service.onrender.com`
+   - `NEXT_PUBLIC_API_URL`: `https://your-backend-service.onrender.com`
 4. Deploy!
 
 ---

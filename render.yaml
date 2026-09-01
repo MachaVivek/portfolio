@@ -57,7 +57,7 @@ services:
     dockerfilePath: ./Dockerfile
     healthCheckPath: /api/health
     envVars:
-      - key: BACKEND_URL
+      - key: NEXT_PUBLIC_API_URL
         fromService:
           name: portfolio-backend
           type: web

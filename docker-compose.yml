@@ -27,6 +27,6 @@ services:
     environment:
       # "backend" is the service name above — inside the compose network that
       # resolves to the backend container.
-      BACKEND_URL: http://backend:8000
+      NEXT_PUBLIC_API_URL: http://backend:8000
     depends_on:
       - backend
