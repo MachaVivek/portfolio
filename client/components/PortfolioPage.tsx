@@ -24,8 +24,12 @@ export default function PortfolioPage({ isActive }: PortfolioPageProps) {
 
   return (
     <article
+      id="projects"
       className={`portfolio${isActive ? " active" : ""}`}
       data-page="projects"
+      role="tabpanel"
+      aria-labelledby="tab-projects"
+      tabIndex={0}
     >
       <header>
         <h2 className="h2 article-title">Projects</h2>
@@ -78,7 +82,12 @@ export default function PortfolioPage({ isActive }: PortfolioPageProps) {
               data-filter-item
               data-category={project.category}
             >
-              <a href={project.link || "#"}>
+              <a
+                href={project.link || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`View ${project.title} project on GitHub`}
+              >
                 <figure className="project-img">
                   <div className="project-item-icon-box">
                     <ion-icon name="eye-outline"></ion-icon>

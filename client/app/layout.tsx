@@ -1,21 +1,173 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeContext";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import StructuredData from "@/components/StructuredData";
 import { portfolioData } from "@/data/portfolioData";
-import { ASSET_PATHS, EXTERNAL_SCRIPTS } from "@/lib/constants";
+import { EXTERNAL_SCRIPTS } from "@/lib/constants";
+
+const BASE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://machavivek.vercel.app";
+
+const { profile, about } = portfolioData;
+
+const SEO_DESCRIPTION =
+  `${profile.name} is an Associate Software Engineer based in Hyderabad, India, ` +
+  `specializing in Full Stack Development (React, Next.js, Node.js, FastAPI), ` +
+  `AI Engineering (RAG, LangChain, Vector Databases, MCP Servers), Mobile Apps (React Native), ` +
+  `and DevOps (Docker, AWS, CI/CD). LeetCode Knight with 1900+ rating, ` +
+  `Institute Rank 3 at KMIT, and 1000+ DSA problems solved.`;
+
+const SEO_KEYWORDS = [
+  // Identity
+  "Macha Vivek",
+  "Vivek Macha",
+  "MachaVivek",
+  // Role
+  "Associate Software Engineer",
+  "Software Engineer Hyderabad",
+  "Full Stack Developer India",
+  "Full Stack Engineer",
+  "React Developer",
+  "Next.js Developer",
+  "Node.js Developer",
+  "FastAPI Developer",
+  // AI
+  "AI Engineer",
+  "RAG Engineer",
+  "LangChain Developer",
+  "Vector Database",
+  "MCP Server",
+  "LLM Engineer",
+  // Mobile
+  "React Native Developer",
+  "Mobile App Developer",
+  // DevOps
+  "Docker",
+  "AWS Developer",
+  "DevOps Engineer",
+  "CI/CD",
+  "GitHub Actions",
+  // Data / Backend
+  "PostgreSQL",
+  "MongoDB",
+  "Redis",
+  "Microservices",
+  "System Design",
+  // CP
+  "LeetCode Knight",
+  "Competitive Programmer",
+  "Data Structures Algorithms",
+  // Misc
+  "Open Source Developer",
+  "TypeScript",
+  "Python Developer",
+  "Portfolio",
+  "Hyderabad",
+  "Telangana India",
+].join(", ");
 
 export const metadata: Metadata = {
-  title: `${portfolioData.profile.name} - Personal Portfolio`,
-  description: `Personal portfolio website - ${portfolioData.profile.name}, ${portfolioData.profile.title}`,
+  metadataBase: new URL(BASE_URL),
+
+  title: {
+    default: `${profile.name} | Associate Software Engineer & Full Stack Developer`,
+    template: `%s | ${profile.name}`,
+  },
+
+  description: SEO_DESCRIPTION,
+  keywords: SEO_KEYWORDS,
+
+  authors: [{ name: profile.name, url: BASE_URL }],
+  creator: profile.name,
+  publisher: profile.name,
+  category: "technology",
+
+  alternates: {
+    canonical: "/",
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+
+  openGraph: {
+    type: "profile",
+    url: BASE_URL,
+    siteName: `${profile.name} — Portfolio`,
+    title: `${profile.name} | Associate Software Engineer & Full Stack Developer`,
+    description: SEO_DESCRIPTION,
+    locale: "en_US",
+    firstName: "Vivek",
+    lastName: "Macha",
+    gender: "male",
+    username: "MachaVivek",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: `${profile.name} — Associate Software Engineer | Full Stack, AI & Mobile Developer`,
+        type: "image/png",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: `${profile.name} | Associate Software Engineer & Full Stack Developer`,
+    description: SEO_DESCRIPTION,
+    creator: "@MachaVivek",
+    images: ["/opengraph-image"],
+  },
+
   icons: {
-    icon: ASSET_PATHS.FAVICON,
-    shortcut: ASSET_PATHS.FAVICON,
-    apple: ASSET_PATHS.FAVICON,
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32", type: "image/x-icon" },
+      { url: "/images/avatar.png", sizes: "192x192", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [{ url: "/images/avatar.png", sizes: "180x180", type: "image/png" }],
+  },
+
+  manifest: "/manifest.webmanifest",
+
+  formatDetection: {
+    telephone: false,
+    date: false,
+    address: false,
+    email: false,
+    url: false,
+  },
+
+  other: {
+    "google-site-verification": "",   // ← add your Search Console verification token here when ready
+    "msvalidate.01": "",              // ← add Bing verification token here when ready
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#1e1e1e" },
+  ],
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+
+// Inline theme init script to prevent flash of unstyled content (FOUC)
 const themeInitScript = `
 (function() {
   try {
@@ -66,7 +218,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="color-scheme" content="light dark" />
+        {/* FOUC-prevention: must run before paint */}
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        {/* Schema.org JSON-LD structured data */}
+        <StructuredData />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"

@@ -10,7 +10,14 @@ export default function ResumePage({ isActive }: ResumePageProps) {
   const { resume } = portfolioData;
 
   return (
-    <article className={`resume${isActive ? " active" : ""}`} data-page="resume">
+    <article
+      id="resume"
+      className={`resume${isActive ? " active" : ""}`}
+      data-page="resume"
+      role="tabpanel"
+      aria-labelledby="tab-resume"
+      tabIndex={0}
+    >
       <header>
         <h2 className="h2 article-title">Resume</h2>
       </header>

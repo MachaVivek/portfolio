@@ -484,7 +484,7 @@ export const portfolioData: PortfolioData = {
           "A full-stack productivity and workflow management web ecosystem built with React, Node.js, Express, and PostgreSQL. Features secure JWT authentication, real-time activity feeds, task scheduling, automated reminders, priority queues, and comprehensive performance analytics dashboards.",
         image: "/images/projects/dailyhub.png",
         alt: "Daily Hub",
-        link: "https://github.com/MachaVivek/DailyHub_Backend",
+        link: "https://github.com/MachaVivek/DailyHub_Frontend",
       },
       {
         id: "proj-4",

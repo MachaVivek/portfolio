@@ -25,7 +25,14 @@ export default function AboutPage({ isActive }: AboutPageProps) {
 
   return (
     <>
-      <article className={`about${isActive ? " active" : ""}`} data-page="about">
+      <article
+        id="about"
+        className={`about${isActive ? " active" : ""}`}
+        data-page="about"
+        role="tabpanel"
+        aria-labelledby="tab-about"
+        tabIndex={0}
+      >
         <header>
           <h2 className="h2 article-title">About me</h2>
         </header>

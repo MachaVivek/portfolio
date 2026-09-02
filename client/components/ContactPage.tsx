@@ -77,8 +77,12 @@ export default function ContactPage({ isActive }: ContactPageProps) {
 
   return (
     <article
+      id="contact"
       className={`contact${isActive ? " active" : ""}`}
       data-page="contact"
+      role="tabpanel"
+      aria-labelledby="tab-contact"
+      tabIndex={0}
     >
       <header>
         <h2 className="h2 article-title">Contact</h2>
