@@ -6,6 +6,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import StructuredData from "@/components/StructuredData";
 import { portfolioData } from "@/data/portfolioData";
 import { EXTERNAL_SCRIPTS } from "@/lib/constants";
+import { Analytics } from "@vercel/analytics/react"
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://machavivek.vercel.app";
@@ -234,6 +235,7 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <Analytics />
         <ErrorBoundary>
           <ThemeProvider>{children}</ThemeProvider>
         </ErrorBoundary>
